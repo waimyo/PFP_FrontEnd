@@ -98,6 +98,19 @@
                             placeholder="ဝန်ဆောင်မှုအမျိုးအစား"
                           ></v-text-field>
                         </v-col>
+                        <v-col cols="12" md="3" v-show="!showminandcpudd">
+                          <v-autocomplete
+                            v-model="dataSearch.user_id"
+                            item-text="username"
+                            item-value="id"
+                            autocomplete="off"
+                            :items="deolist"
+                            outlined
+                            dense
+                            placeholder="Select DEO"
+                            
+                          ></v-autocomplete>
+                        </v-col>
                         <v-col cols="12" md="3" v-show="showminandcpudd">
                           <v-autocomplete
                             v-model="dataSearch.ministry_id"
@@ -297,7 +310,10 @@ export default {
       footerProps: {
         "items-per-page-options": [10, 20, 30, 40, 50]
       },
-      ministryRules: [v => !!v || "ဝန်ကြီးဌာနရွေးရန်လိုအပ်ပါသည်။"]
+      ministryRules: [v => !!v || "ဝန်ကြီးဌာနရွေးရန်လိုအပ်ပါသည်။"],
+
+      deolist: [],
+      deo_parent_id : 0,
     };
   },
   computed: {
@@ -314,6 +330,8 @@ export default {
   created() {
     this.$emit("eventname", true);
     let user = JSON.parse(localStorage.getItem("user"));
+    this.deo_parent_id = user.id;
+    window.console.log(user);
     if (user.role_id == 1) {
       this.showminandcpudd = true;
       this.GetMinistry();
@@ -322,6 +340,7 @@ export default {
       this.showminandcpudd = false;
     }
     this.CurrentMonth();
+    this.GetDEO();
   },
 
   updated() {
@@ -440,6 +459,14 @@ export default {
           username: "All CPUS"
         });
         this.dataSearch.user_id=0;
+      });
+    },
+
+    GetDEO() {
+      var vm = this;
+      DropDownService.GetDEOAccount().then(result => {
+        vm.deolist = result.data;
+        window.console.log(vm.deolist)
       });
     },
 
