@@ -240,7 +240,7 @@ export default {
     },
     GetCPUAccount(ministry_id){
       var vm=this;
-      DropDownService.GetAllCPUAccountByMinistry(ministry_id).then(
+      DropDownService.GetAllCPUAccountOnlyByMinistry(ministry_id).then(
         result=>{
           vm.cpuaccountlist=result.data;
         }

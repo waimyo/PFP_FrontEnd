@@ -117,9 +117,7 @@ export default {
       var vm=this;
       vm.loading=true;
       InboxOutboxService.GetDetailData(this.chatting_id).then((res)=>{
-        console.log(res);
         vm.datalist=res.data;
-        console.log(vm.datalist)
         vm.loading=false;
       })
     },

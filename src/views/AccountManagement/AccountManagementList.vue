@@ -407,7 +407,6 @@ export default {
                     response.data.models.data.forEach(function (item) {
                         vm.itemlist.push(item);
                     });
-                    window.console.log(vm.itemlist)
                     // response.data.models.data.forEach(function (item) {
                     //   vm.itemlist.push(item);
                     // });

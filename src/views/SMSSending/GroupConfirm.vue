@@ -198,7 +198,7 @@ export default {
         params.search = this.glist;
         // alert("id " + this.glist.uploadedby);
         params.draw = this.draw;
-        params.descending = params.sortDesc[0];
+        //params.descending = params.sortDesc[0];
         if (params.descending == true) {
           params.sortOrder = "desc";
         } else {

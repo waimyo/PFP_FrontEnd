@@ -21,7 +21,6 @@ export const menupermission = {
                 });
             });
             state.permission = allpermission.filter(m => m.program_name === program_code && m.view === action);
-            console.log(allpermission);
             if (state.permission.length > 0) {
                 return true;
             } else {

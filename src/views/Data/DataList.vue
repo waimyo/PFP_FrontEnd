@@ -331,7 +331,6 @@ export default {
     this.$emit("eventname", true);
     let user = JSON.parse(localStorage.getItem("user"));
     this.deo_parent_id = user.id;
-    window.console.log(user);
     if (user.role_id == 1) {
       this.showminandcpudd = true;
       this.GetMinistry();
@@ -466,7 +465,6 @@ export default {
       var vm = this;
       DropDownService.GetDEOAccount().then(result => {
         vm.deolist = result.data;
-        window.console.log(vm.deolist)
       });
     },
 

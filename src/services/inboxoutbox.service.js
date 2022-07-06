@@ -69,7 +69,6 @@ export default new(class InboxOutboxService {
     }
 
     TestFileinsert(file){
-        console.log(file)
         return axios.post(API_URL+'/Chatting/SaveFiles',{file:file},{headers:authHeader()});
     }
 })();

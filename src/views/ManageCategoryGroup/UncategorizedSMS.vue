@@ -332,7 +332,6 @@ export default {
       DropDown.GetCategory().then((result) => {
         this.categorylist = result.data;
         this.category_id = result.data[0].id;
-        window.console.log(this.categorylist);
       });
     },
   },

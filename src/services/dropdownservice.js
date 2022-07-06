@@ -62,6 +62,10 @@ class DropDownService {
     GetAllCPUAccountByMinistry(ministry_id) {
         return axios.get(API_URL + '/DropDown/GetAllCPUAccountByMinistry?ministryid=' + ministry_id);
     }
+    // DEO Account Entry
+    GetAllCPUAccountOnlyByMinistry(ministry_id) {
+        return axios.get(API_URL + '/DropDown/GetAllCPUAccountOnlyByMinistry?ministryid=' + ministry_id);
+    }
     GetRoleByNotDefault() {
         return axios.get(API_URL + "/DropDown/GetRoleByNotDefault");
     }

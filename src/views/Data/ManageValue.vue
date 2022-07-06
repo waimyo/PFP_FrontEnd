@@ -202,7 +202,6 @@ export default {
           response.data.data.forEach(function (item) {
             vm.itemlist1.push(item);
           });
-          window.console.log(vm.itemlist1);
           vm.total = response.data.recordsTotal;
           //vm.sortByNM = params.sortBy;
           vm.loading = false;
