@@ -10,23 +10,39 @@
       <!-- <img style="width: 60px" :src="minlogo"/> -->
       <!-- <img :src="`data:image/png;base64,${udata.minlogo}`" /> -->
       <!-- <img v-bind:src="'data:image/jpeg;base64,'+udata.mlogo" /> -->
-<!-- <img :src="mlogo" /> -->
- <img style="width: 60px"
-                      :src="`data:image/png;base64,${udata.minlogo}`"
-                      />
+      <!-- <img :src="mlogo" /> -->
+      <img
+        style="width: 60px"
+        :src="`data:image/png;base64,${udata.minlogo}`"
+      />
       <v-toolbar-title class="text-uppercase subtitle-1 ml-3"
-        ><h6 style="text-shadow: 1px 1px 1px black, 0 0 1em rgb(250 250 250), 0 0 0.2em blue;">Public Feedback Programme</h6>
-        <h4 style="letter-spacing: 0;text-shadow: 1px 1px 1px black, 0 0 1em rgb(250 250 250), 0 0 0.2em blue;">{{udata.minname}}</h4>
+        ><h6
+          style="
+            text-shadow: 1px 1px 1px black, 0 0 1em rgb(250 250 250),
+              0 0 0.2em blue;
+          "
+        >
+          Public Feedback Programme
+        </h6>
+        <h4
+          style="
+            letter-spacing: 0;
+            text-shadow: 1px 1px 1px black, 0 0 1em rgb(250 250 250),
+              0 0 0.2em blue;
+          "
+        >
+          {{ udata.minname }}
+        </h4>
       </v-toolbar-title>
       <v-spacer></v-spacer>
       <v-menu
-      v-model="menu"
-      :close-on-content-click="false"
-      :nudge-width="100"
-      offset-y
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <!-- <v-btn
+        v-model="menu"
+        :close-on-content-click="false"
+        :nudge-width="100"
+        offset-y
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <!-- <v-btn
           color="indigo"
           dark
           v-bind="attrs"
@@ -34,44 +50,90 @@
         >
           Menu as Popover
         </v-btn> -->
-        <v-icon  size="22" v-bind="attrs"
-          v-on="on" class="mr-5">mdi-information-outline</v-icon>
-      </template>
+          <v-icon size="22" v-bind="attrs" v-on="on" class="mr-5"
+            >mdi-information-outline</v-icon
+          >
+        </template>
 
-      <v-card>
-        <v-list>
-          <v-list-item v-if="udata.role_id == 1">
-            <a style="font-size: 13px;" href="/UserGuide(SuperAdminRole).pdf" download="" small outlined>
-              <v-icon color="indigo">mdi-download</v-icon>User Guide Download ရယူရန်</a>
-            
-          </v-list-item>
-          <v-list-item v-if="udata.role_id == 2">
-            <a style="font-size: 13px;" href="/UserGuide(MinistryRole).pdf" download="" small outlined>
-              <v-icon color="indigo">mdi-download</v-icon>User Guide Download ရယူရန်</a>
-            
-          </v-list-item>
-          <v-list-item v-if="udata.role_id == 3">
-            <a style="font-size: 13px;" href="/UserGuide(CPURole).pdf" download="" small outlined>
-              <v-icon color="indigo">mdi-download</v-icon>User Guide Download ရယူရန်</a>
-            
-          </v-list-item>
-          <v-list-item v-if="udata.role_id == 4">
-            <a style="font-size: 13px;" href="/UserGuide(DEORole).pdf" download="" small outlined>
-              <v-icon color="indigo">mdi-download</v-icon>User Guide Download ရယူရန်</a>
-            
-          </v-list-item>
-        </v-list>
+        <v-card>
+          <v-list dense>
+            <v-list-item v-if="udata.role_id == 1">
+              <a
+                style="font-size: 13px"
+                href="/UserGuide(SuperAdminRole).pdf"
+                download=""
+                small
+                outlined
+              >
+                <v-icon color="indigo">mdi-download</v-icon>User Guide Download
+                ရယူရန်</a
+              >
+            </v-list-item>
+            <v-list-item v-if="udata.role_id == 2">
+              <a
+                style="font-size: 13px"
+                href="/UserGuide(MinistryRole).pdf"
+                download=""
+                small
+                outlined
+              >
+                <v-icon color="indigo">mdi-download</v-icon>User Guide Download
+                ရယူရန်</a
+              >
+            </v-list-item>
+            <v-list-item v-if="udata.role_id == 3">
+              <a
+                style="font-size: 13px"
+                href="/UserGuide(CPURole).pdf"
+                download=""
+                small
+                outlined
+              >
+                <v-icon color="indigo">mdi-download</v-icon>User Guide Download
+                ရယူရန်</a
+              >
+            </v-list-item>
+            <v-list-item v-if="udata.role_id == 4">
+              <a
+                style="font-size: 13px"
+                href="/UserGuide(DEORole).pdf"
+                download=""
+                small
+                outlined
+              >
+                <v-icon color="indigo">mdi-download</v-icon>User Guide Download
+                ရယူရန်</a
+              >
+            </v-list-item>
 
-      </v-card>
-    </v-menu>
+            <v-list-item>
+              <a style="font-size: 13px" @click="ExportExcel" small outlined>
+                <v-icon color="indigo">mdi-download</v-icon>Location Download
+                ရယူရန်</a
+              >
+              <a href="#" id="mylink"></a>
+              <!-- <v-btn
+                style="float: right"
+                :loading="excelloading"
+                :disabled="excelloading"
+                small
+                outlined
+                color="success"
+                @click="ExportExcel"
+                ><v-icon left>mdi-export</v-icon> Location Download ရယူရန်
+                <span slot="loader" class="custom-loader">
+                  <v-icon light>mdi-cached</v-icon>
+                </span></v-btn
+              >
+              <a href="#" id="mylink"></a> -->
+            </v-list-item>
+          </v-list>
+        </v-card>
+      </v-menu>
 
-    <v-menu
-      v-model="menu1"
-      :close-on-content-click="false"
-      offset-y
-    >
-      <template v-slot:activator="{ on, attrs }">
-        <!-- <v-btn
+      <v-menu v-model="menu1" :close-on-content-click="false" offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <!-- <v-btn
           color="indigo"
           dark
           v-bind="attrs"
@@ -79,28 +141,37 @@
         >
           Menu as Popover
         </v-btn> -->
-        <v-icon  size="22" v-bind="attrs"
-          v-on="on" class="">mdi-account-circle</v-icon>
-      </template>
+          <v-icon size="22" v-bind="attrs" v-on="on" class=""
+            >mdi-account-circle</v-icon
+          >
+        </template>
 
-      <v-card>
-        <v-list>
-          <v-list-item>
-            <v-list-item-avatar>
-              <!-- <img
+        <v-card>
+          <v-list>
+            <v-list-item>
+              <v-list-item-avatar>
+                <!-- <img
                 src="https://cdn.vuetifyjs.com/images/john.jpg"
                 alt="John"
               > -->
-              <v-icon color="warning darken-1" size="40" v-bind="attrs"
-          v-on="on" class="">mdi-account-circle</v-icon>
-            </v-list-item-avatar>
+                <v-icon
+                  color="warning darken-1"
+                  size="40"
+                  v-bind="attrs"
+                  v-on="on"
+                  class=""
+                  >mdi-account-circle</v-icon
+                >
+              </v-list-item-avatar>
 
-            <v-list-item-content>
-              <v-list-item-title>{{udata.username}}</v-list-item-title>
-              <v-list-item-subtitle class="pt-2">{{udata.name}}</v-list-item-subtitle>
-            </v-list-item-content>
+              <v-list-item-content>
+                <v-list-item-title>{{ udata.username }}</v-list-item-title>
+                <v-list-item-subtitle class="pt-2">{{
+                  udata.name
+                }}</v-list-item-subtitle>
+              </v-list-item-content>
 
-            <!-- <v-list-item-action>
+              <!-- <v-list-item-action>
               <v-btn
                 :class="fav ? 'red--text' : ''"
                 icon
@@ -109,12 +180,12 @@
                 <v-icon>mdi-heart</v-icon>
               </v-btn>
             </v-list-item-action> -->
-          </v-list-item>
-        </v-list>
+            </v-list-item>
+          </v-list>
 
-        <v-divider></v-divider>
+          <v-divider></v-divider>
 
-        <!-- <v-list>
+          <!-- <v-list>
           <v-list-item>
             <v-list-item-action>
               <v-switch
@@ -136,32 +207,27 @@
           </v-list-item>
         </v-list> -->
 
-        <v-card-actions>
-          <!-- <v-spacer></v-spacer> -->
-          <v-col cols="12" md="12" class="text-center">
- <v-btn small @click="Logout" outlined color="warning">
-                    Logout<v-icon right>mdi-logout</v-icon>
-                  </v-btn>
-          </v-col>
-        </v-card-actions>
-      </v-card>
-    </v-menu>
+          <v-card-actions>
+            <!-- <v-spacer></v-spacer> -->
+            <v-col cols="12" md="12" class="text-center">
+              <v-btn small @click="Logout" outlined color="warning">
+                Logout<v-icon right>mdi-logout</v-icon>
+              </v-btn>
+            </v-col>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
 
-
-    
-      
       <!-- <h5 style="letter-spacing: 0;">{{udata.username}}</h5>
       
       <v-btn text small @click="Logout">
                     <v-icon right>mdi-logout</v-icon>
                   </v-btn> -->
-                  
     </v-app-bar>
     <!-- End of app toolbar -->
 
     <!-- Start of mobile side menu -->
     <v-navigation-drawer v-model="drawer" app clipped width="290">
-         
       <v-list dense>
         <template v-for="item in items">
           <v-row v-if="item.heading" :key="item.heading" align="center">
@@ -208,29 +274,31 @@
               <v-list-item-title>{{ item.text }}</v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-
-         
-
         </template>
       </v-list>
 
-<div v-if="udata.role_id != 1 && show">
-      <a style="font-size: 12px; color: #000" @click="ShowChangePasswordDialog(udata.id)" class="ml-3"><v-icon class="mr-2 ml-1">mdi-asterisk</v-icon>Password ပြောင်းရန် 
-                            <ChangePwd ref="PasswordModal" />
-                        </a> 
-                        
-
-</div>
-<div v-if="udata.role_id == 2 && show" class="mt-4">
-    <a style="font-size: 12px; color: #000" @click="editItem(udata.id)" class="ml-3 mt-8"><v-icon class="mr-2 ml-1">mdi-asterisk</v-icon>Logo ပြောင်းရန် 
-                             <MinistryEntry ref="MinistryEntryModal"
-              />
-                        </a> 
-              <!-- <v-btn @click="editItem(udata.ministry_id)" dense class="ml-5 mt-5" small outlined color="warning">Logo ပြောင်းရန်
+      <div v-if="udata.role_id != 1 && show">
+        <a
+          style="font-size: 12px; color: #000"
+          @click="ShowChangePasswordDialog(udata.id)"
+          class="ml-3"
+          ><v-icon class="mr-2 ml-1">mdi-asterisk</v-icon>Password ပြောင်းရန်
+          <ChangePwd ref="PasswordModal" />
+        </a>
+      </div>
+      <div v-if="udata.role_id == 2 && show" class="mt-4">
+        <a
+          style="font-size: 12px; color: #000"
+          @click="editItem(udata.id)"
+          class="ml-3 mt-8"
+          ><v-icon class="mr-2 ml-1">mdi-asterisk</v-icon>Logo ပြောင်းရန်
+          <MinistryEntry ref="MinistryEntryModal" />
+        </a>
+        <!-- <v-btn @click="editItem(udata.ministry_id)" dense class="ml-5 mt-5" small outlined color="warning">Logo ပြောင်းရန်
                 <MinistryEntry ref="MinistryEntryModal"
               />
               </v-btn> -->
-</div>
+      </div>
     </v-navigation-drawer>
     <!-- End of mobile side menu -->
 
@@ -246,30 +314,37 @@ import AccountService from "../services/accountservice";
 import Account from "../models/account";
 
 import MinistryEntry from "../views/Data Management/MinistryEntry";
-import MinistryService from "../services/ministryservice"
+import MinistryService from "../services/ministryservice";
+
+import LocationService from "../services/locationservice";
+
+import $ from "jquery";
+
 export default {
   components: {
-        ChangePwd,
-        MinistryEntry
-    },
+    ChangePwd,
+    MinistryEntry,
+  },
 
   name: "App",
   data() {
     return {
       drawer: null, // Hide mobile side menu by default
-      udata: '', 
+      udata: "",
       minlogo: "",
       items: [],
-      account:new Account(),
+      account: new Account(),
       show: false,
       menu: false,
       menu1: false,
+
+      excelloading: false,
     };
   },
 
-  created(){
+  created() {
     this.getMenu();
-     this.udata=JSON.parse(localStorage.getItem('user'));
+    this.udata = JSON.parse(localStorage.getItem("user"));
   },
 
   methods: {
@@ -291,11 +366,9 @@ export default {
       this.$refs.MinistryEntryModal.isDisabled = true;
       MinistryService.GetById(item).then((result) => {
         this.$refs.MinistryEntryModal.ministry = result.data;
-        if(result.data.imagebyte==null || result.data.imagebyte=="")
-        {
-          this.$refs.MinistryEntryModal.ministry.imagebyte=null;
-        }
-        else{
+        if (result.data.imagebyte == null || result.data.imagebyte == "") {
+          this.$refs.MinistryEntryModal.ministry.imagebyte = null;
+        } else {
           this.$refs.MinistryEntryModal.ministry.imagebyte = `data:image/x-icon;base64,${result.data.imagebyte}`;
         }
         this.loading = false;
@@ -304,38 +377,45 @@ export default {
       this.$refs.MinistryEntryModal.dialog = true;
     },
 
-
     getImage(poster) {
       // alert("poster"+poster)
-  return poster ? require("" + poster) : ''
-  
-},
+      return poster ? require("" + poster) : "";
+    },
 
-     Logout() {
+    Logout() {
       this.$store.state.menupermission.menuList = [];
       this.$store.dispatch("auth/logout");
       this.$router.push({
         name: "Login",
       });
-
     },
 
-    ShowChangePasswordDialog(item){  
-      //this.$refs.ChangePasswordModal.dialog=true;        
-          AccountService.GetById(item).then(result => {
-                    this.$refs.PasswordModal.account = result.data;
-                    this.$refs.PasswordModal.isshowcurrentpassword=false;
-                    this.$refs.PasswordModal.dialog=true;
-            });
-        },
+    ShowChangePasswordDialog(item) {
+      //this.$refs.ChangePasswordModal.dialog=true;
+      AccountService.GetById(item).then((result) => {
+        this.$refs.PasswordModal.account = result.data;
+        this.$refs.PasswordModal.isshowcurrentpassword = false;
+        this.$refs.PasswordModal.dialog = true;
+      });
+    },
+
+    ExportExcel() {
+      var vm = this;
+      vm.excelloading = true;
+      LocationService.GetExcelData().then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        $("#mylink").attr("href", url);
+        $("#mylink").attr("download", "Location.xls");
+        $("#mylink")[0].click();
+        vm.excelloading = false;
+      });
+    },
   },
 
   computed: {
-     
     getLists() {
       return this.$store.state.menupermission.menuList;
     },
   },
-
 };
 </script>
