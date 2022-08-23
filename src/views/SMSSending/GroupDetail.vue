@@ -282,13 +282,13 @@ export default {
       pagination: {
         descending: true,
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 50,
         pageStart: 1,
         pageStop: null,
         sortBy: ["id"],
       },
       footerProps: {
-        "items-per-page-options": [10, 20, 30, 40, 50],
+        "items-per-page-options": [50,100,200,300,400,500],
       },
 
       gid: 0,

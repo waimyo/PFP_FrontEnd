@@ -78,6 +78,7 @@ export default new (class CampaignService {
   }
 
   InsertData(camp) {
+    console.log(camp);
     return axios.post(
       API_URL + "/campaignsentry/saveorupdate/",
       {
@@ -89,6 +90,7 @@ export default new (class CampaignService {
         SmsCodeId: camp.SmsCodeId,
         GroupId: camp.GroupId,
         SmsShortCodeText: camp.SmsShortCodeText,
+        ClosedDate:camp.closeddate,
       },
       {
         headers: authHeader(),

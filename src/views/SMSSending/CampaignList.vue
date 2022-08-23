@@ -180,14 +180,14 @@ export default {
             pagination: {
                 descending: true, //sort order
                 page: 1, //current
-                itemsPerPage: 10,
+                itemsPerPage: 50,
                 pageStart: 1, //skip
                 pageStop: null, //length
                 // pageCount: 0,
                 sortBy: ["id"] //default sort column
             },
             footerProps: {
-                "items-per-page-options": [10, 20, 30, 40, 50],
+                "items-per-page-options": [50,100,200,300,400,500],
             },
         };
 
@@ -279,7 +279,7 @@ export default {
             this.pagination = {
                     descending: true, //sort order
                     page: 1, //current
-                    itemsPerPage: 10,
+                    itemsPerPage: 50,
                     pageStart: 1, //skip
                     pageStop: null, //length
                     // pageCount: 0,
@@ -293,7 +293,7 @@ export default {
                 this.pagination = {
                     descending: true, //sort order
                     page: 1, //current
-                    itemsPerPage: 10,
+                    itemsPerPage: 50,
                     pageStart: 1, //skip
                     pageStop: null, //length
                     // pageCount: 0,

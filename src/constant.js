@@ -32,6 +32,8 @@ const PCodeFor_SERVICES = "Service";
 const PCodeFor_CATEGORY = "Category";
 const PCodeFor_LOCATION = "Location";
 const PCodeFor_ACCESS_LOGS = "AccessLogs";
+const PCodeFor_ANNOUNCEMENT="Announcement";
+const PCodeFor_FAQ="FAQ";
 
 
 
@@ -68,4 +70,6 @@ export default {
     PCodeFor_CATEGORY: PCodeFor_CATEGORY,
     PCodeFor_LOCATION: PCodeFor_LOCATION,
     PCodeFor_ACCESS_LOGS: PCodeFor_ACCESS_LOGS,
+    PCodeFor_ANNOUNCEMENT: PCodeFor_ANNOUNCEMENT,
+    PCodeFor_FAQ:PCodeFor_FAQ,
 }

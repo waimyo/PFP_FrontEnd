@@ -11,6 +11,7 @@ import '@mdi/font/css/materialdesignicons.css'
 
 Vue.component('zingchart', zingchartVue)
 
+
 Vue.use(Vuetify);
 Vue.use(DatePicker);
 

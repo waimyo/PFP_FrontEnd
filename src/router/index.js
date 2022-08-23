@@ -31,7 +31,8 @@ import ServiceList from "../views/Data Management/ServiceList";
 import LocationList from "../views/Data Management/LocationList";
 import AccessLog from "../views/Security/AccessLog";
 import ChangePassword from "../views/ChangePassword/ChangePassword";
-
+import AnnouncementList from "../views/Data Management/AnnouncementList";
+import FAQList from "../views/Data Management/FAQList";
 import Unauthorized from "../views/Unauthorized";
 import Constant from "../constant";
 import store from '../store'
@@ -461,6 +462,40 @@ const routes = [{
         beforeEnter: (to, from, next) => {
             var h = store.getters.getPermissionByMenuForView(
                 Constant.PCodeFor_LOCATION,
+                Constant.PermissionForView
+            );
+            if (h == false) {
+                next("/Unauthorized");
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: "/AnnouncementList",
+        name: "AnnouncementList",
+        component: AnnouncementList,
+
+        beforeEnter: (to, from, next) => {
+            var h = store.getters.getPermissionByMenuForView(
+                Constant.PCodeFor_ANNOUNCEMENT,
+                Constant.PermissionForView
+            );
+            if (h == false) {
+                next("/Unauthorized");
+            } else {
+                next();
+            }
+        }
+    },
+    {
+        path: "/FAQList",
+        name: "FAQList",
+        component: FAQList,
+
+        beforeEnter: (to, from, next) => {
+            var h = store.getters.getPermissionByMenuForView(
+                Constant.PCodeFor_FAQ,
                 Constant.PermissionForView
             );
             if (h == false) {

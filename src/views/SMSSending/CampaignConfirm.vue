@@ -94,6 +94,7 @@ export default {
         this.camp.ClosingMessage = this.$route.query.closingmessage;
         this.camp.SmsCodeId = this.$route.query.smscodeid;
         this.camp.SmsShortCodeText = this.$route.query.smscodetext;
+        this.camp.closeddate=this.$route.query.closedDate;
         this.GetConfirmList();
     },
     updated() {
@@ -108,7 +109,7 @@ export default {
             CampaignService.GetCampaignConfirmList(this.camp.GroupId).then(result => {
 
                 for (var i in result.data) {
-
+                    console.log(this.$route.query);
                     var obj = {};
                     obj["from"] = this.$route.query.smscodetext;
                     obj["to"] = result.data[i];
@@ -120,6 +121,7 @@ export default {
             })
         },
         Insert() {
+            console.log(this.camp);
             CampaignService.InsertData(this.camp).then(
                 result => {
                     if (result.data.success) {

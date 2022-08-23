@@ -7,5 +7,6 @@ export default class CampaignsEntry{
     SmsCodeId=0;
     GroupId=0;
     SmsShortCodeText="";
+    closeddate="";
 
 }

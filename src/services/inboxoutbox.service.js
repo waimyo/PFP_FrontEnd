@@ -31,15 +31,6 @@ export default new(class InboxOutboxService {
     }
 
     InsertData(entity) {
-        
-            // let formData=new FormData();
-            // //formData.append("id",entity.id);
-            // formData.append("receiver",entity.receiver);
-            // formData.append("description",entity.description);
-            // formData.append("ismain",entity.ismaindescription);
-            // //formData.append("attachfile",entity.file);
-            // formData.append("mainchatting_id",entity.mainchat_id);
-            // return axios.post(API_URL + '/Chatting',formData,{headers: authHeader()});
         return axios.post(
             API_URL + '/Chatting', {
                 id: entity.id,
@@ -47,7 +38,6 @@ export default new(class InboxOutboxService {
                 description: entity.description,
                 ismain: entity.ismaindescription,
                 mainchatting_id: entity.mainchat_id,
-                //uploadfiles:files,
             }, {
                 headers: authHeader(),
             }
@@ -55,10 +45,6 @@ export default new(class InboxOutboxService {
     }
 
     InsertAttachFile(file, chatid) {
-        // alert("insert attach file");
-        // let formData = new FormData();
-        // formData.append("mainchatting_id", chatid)
-        // formData.append("attachfile", file);
         let config={
             headers: authHeader(),
             params:{
@@ -70,5 +56,9 @@ export default new(class InboxOutboxService {
 
     TestFileinsert(file){
         return axios.post(API_URL+'/Chatting/SaveFiles',{file:file},{headers:authHeader()});
+    }
+
+    UpdateStatus(chatid){
+        return axios.post(API_URL + '/Chatting/UpdateStatus', {chatid: chatid}, { headers: authHeader() });
     }
 })();

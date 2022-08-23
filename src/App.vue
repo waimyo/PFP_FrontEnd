@@ -16,6 +16,7 @@
       class="text-center"
       cols="12"
     >
+    <span ><marquee><strong> <h5 style="font-weight: 600;color: #ff1100;" class="pl-5">{{announce}}</h5></strong></marquee></span>
         <span>&copy; {{ new Date().getFullYear() }} — <strong>Public Feedback Programme (PFP)</strong></span>
       </v-col>
       </v-footer>
@@ -43,21 +44,36 @@
 
 <script>
 import NavigationDrawer from "./views/NavigationDrawer";
+import announcementservice from "./services/announcementservice"
 export default {
   name: "App",
   components: {
     NavigationDrawer,
   },
-  data() {
+  data() {        
     return {
       drawer: null, // Hide mobile side menu by default
       valid: false,
+      announce:"",
+      isannounce:false,
     };
+  },
+  created() {
+    this.getannouncement();
   },
   methods: {
     updateparent(val) {
       this.valid = val;
     },
+    getannouncement(){
+      var vm=this;
+      announcementservice.GetAnnouncements().then((result) => {
+        if(result.data != ""){
+          vm.isannounce=true;
+          vm.announce=result.data;
+        }     
+      });
+    }
   },
 };
 </script>

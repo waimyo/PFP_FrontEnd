@@ -14,7 +14,7 @@
                 <v-divider></v-divider>
                 <v-col cols="12" md="12">
                     <v-row dense class="mb-n5">
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="2">
                             <!-- <router-link :to="{ path: '/InboundOutboundLetterList/InboundOutboundLetterEntry' }">
                   <v-btn class="mt-1" small outlined color="primary" ><v-icon left>mdi-plus-circle</-icon> Create New</v-btn>
                 </router-link> -->
@@ -23,12 +23,32 @@
                                 <InboundOutboundLetterEntry v-on:getData="GetAllData" ref="InboundOutboundLetterEntryModal" />
                             </v-btn>
                         </v-col>
-                        <v-col cols="12" md="6">
+                        <v-col cols="12" md="10">
                             <v-row dense>
-                                <v-col cols="12" md="7">
+                                <v-col cols="12" md="3">
+                          <date-picker
+                          v-model="fromdate"
+                            valueType="YYYY-MM-DD"
+                            format="DD/MM/YYYY"
+                            :editable="true"
+                            placeholder="Created Date(From)"
+                            clearable
+                          ></date-picker>
+                        </v-col>
+                        <v-col cols="12" md="3">
+                          <date-picker
+                          v-model="todate"
+                            valueType="YYYY-MM-DD"
+                            format="DD/MM/YYYY"
+                            :editable="true"
+                            placeholder="Created Date(To)"
+                            clearable
+                          ></date-picker>
+                        </v-col>
+                                <v-col cols="12" md="3">
                                     <v-text-field v-model="search" placeholder="ရှာဖွေရန်" append-icon="mdi-magnify" outlined dense autocomplete="off"></v-text-field>
                                 </v-col>
-                                <v-col cols="12" md="5">
+                                <v-col cols="12" md="3">
                                     <v-btn class="mr-2" small outlined color="primary" @click="Filter">ရှာမည်</v-btn>
                                     <v-btn class small outlined color="error" @click="ResetFilter">ပြန်လည်ရွေးချယ်မည်</v-btn>
                                 </v-col>
@@ -103,6 +123,8 @@ export default {
             touserlist: [],
             headers: [],
             search: "",
+            fromdate:"",
+            todate:"",
             headerforCpu: [{
                     text: "Unread Message",
                     align: "start",
@@ -118,7 +140,7 @@ export default {
                 {
                     text: "Created Date",
                     sortable: false,
-                    width: "100"
+                    width: "150"
                 },
                 {
                     text: "DESCRIPTION",
@@ -145,13 +167,13 @@ export default {
                 },
             ],
             footerProps: {
-                "items-per-page-options": [10, 20, 30, 40, 50],
+                "items-per-page-options": [50,100,200,300,400,500],
             },
             itemlist: [],
             pagination: {
                 descending: true,
                 page: 1,
-                itemsPerPage: 10,
+                itemsPerPage: 50,
                 pageStart: 1,
                 pageStop: null,
                 sortBy: ["id"],
@@ -222,7 +244,7 @@ export default {
                 params.sortOrder = "asc";
             }
             params.sortBy = params.sortBy[0];
-            InboxOutboxService.GetAll(params).then(result => {
+            InboxOutboxService.GetAll(params,this.fromdate,this.todate).then(result => {
                 vm.itemlist = result.data.data;
                 vm.total = result.data.recordsTotal;
 
@@ -234,6 +256,8 @@ export default {
 
         ResetFilter() {
             this.search = "";
+            this.fromdate="";
+            this.todate="";
             this.GetAllData();
         },
         Filter() {

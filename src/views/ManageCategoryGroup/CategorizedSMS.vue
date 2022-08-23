@@ -37,10 +37,30 @@
           <v-divider></v-divider>
           <v-col cols="12" md="12">
             <v-row dense>
-              <v-col cols="12" md="6"> </v-col>
-              <v-col cols="12" md="6">
+              <v-col cols="12" md="2"> </v-col>
+              <v-col cols="12" md="10">
                 <v-row dense>
-                  <v-col cols="12" md="6">
+                  <v-col cols="12" md="2">
+                          <date-picker
+                          v-model="fromdate"
+                            valueType="YYYY-MM-DD"
+                            format="DD/MM/YYYY"
+                            :editable="true"
+                            placeholder="SMS Time(From)"
+                            clearable
+                          ></date-picker>
+                        </v-col>
+                        <v-col cols="12" md="2">
+                          <date-picker
+                          v-model="todate"
+                            valueType="YYYY-MM-DD"
+                            format="DD/MM/YYYY"
+                            :editable="true"
+                            placeholder="SMS Time(To)"
+                            clearable
+                          ></date-picker>
+                        </v-col>
+                  <v-col cols="12" md="5">
                     <v-text-field
                       v-model="search"
                       placeholder="ရှာဖွေရန်"
@@ -50,7 +70,7 @@
                       autocomplete="off"
                     ></v-text-field>
                   </v-col>
-                  <v-col md="6">
+                  <v-col md="3">
                     <v-btn class="mr-2" small outlined color="primary" @click="Filter"
                       >ရှာမည်</v-btn
                     >
@@ -116,6 +136,8 @@ export default {
       mode: "",
       snackbar: false,
       text: "",
+      fromdate:"",
+      todate:"",
       timeout: "5000",
       x: "right",
       y: "top",
@@ -124,13 +146,13 @@ export default {
       pagination: {
         descending: true,
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 50,
         pageStart: 1,
         pageStop: null,
         sortBy: ["id"],
       },
       footerProps: {
-        "items-per-page-options": [10, 20, 30, 40, 50],
+        "items-per-page-options": [50,100,200,300,400,500],
       },
       headers: [
         {
@@ -208,7 +230,7 @@ export default {
      this.pagination= {
         descending: true,
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 50,
         pageStart: 1,
         pageStop: null,
         sortBy: ["id"],
@@ -217,10 +239,12 @@ export default {
     },
     ResetFilter() {
       this.search = "";
+      this.fromdate="";
+      this.todate="";
       this.pagination= {
         descending: true,
         page: 1,
-        itemsPerPage: 10,
+        itemsPerPage: 50,
         pageStart: 1,
         pageStop: null,
         sortBy: ["id"],
@@ -236,6 +260,8 @@ export default {
       params.pageStop = params.itemsPerPage;
       params.pageStart = params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
       params.search = vm.search;
+      params.fromdate=vm.fromdate;
+      params.todate=vm.todate;
       params.draw = this.draw;
       //params.descending = params.sortDesc[0];
       if (params.descending == true) {

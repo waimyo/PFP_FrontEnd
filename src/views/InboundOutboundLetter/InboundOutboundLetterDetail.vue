@@ -31,7 +31,7 @@
       v-for="(item,i) in datalist"
         :key="i"
     >
-      <v-expansion-panel-header>
+      <v-expansion-panel-header :class="{'light-blue lighten-4': item.isread == false}" @click="ChangeStatus(item.id,item.isread)">
         <p class="mb-n1 primary--text">
               <v-icon color="primary" left>mdi-account-circle</v-icon> {{item.sender}}
         </p>
@@ -60,6 +60,7 @@
 import InboundOutboundLetterEntry from "../InboundOutboundLetter/InboundOutboundLetterEntry.vue";
 import InboxOutboxService from "../../services/inboxoutbox.service";
 import DropDownService from "../../services/dropdownservice";
+import inboxoutboxService from '../../services/inboxoutbox.service';
 
 export default {
   components: {
@@ -73,10 +74,12 @@ export default {
     disabletouserlist:false,
     touserlist:[],
     receiver_id:0,
+    panelcolor:"",
     datalist:[],
   }),
   computed: {},
   created() {
+    this.panelcolor="#E1F5FE";
     this.$emit("eventname", true);
     this.chatting_id=this.$route.query.chatting_id;
     let user=JSON.parse(localStorage.getItem('user'));
@@ -133,6 +136,16 @@ export default {
                      fileLink.setAttribute('download', 'file.pdf');
                      document.body.appendChild(fileLink);
                      fileLink.click()
+    },
+    ChangeStatus(id,isread){
+      let vm=this;
+      if(isread==false){
+        inboxoutboxService.UpdateStatus(id).then((res)=>{
+          vm.GetAllData();
+          return res.data;
+        })
+      }
+      
     }
   },
 };

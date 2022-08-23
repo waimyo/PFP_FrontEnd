@@ -45,6 +45,25 @@
                                         <v-autocomplete clearable placeholder="အုပ်စုရွေးချယ်ပါ" required :rules="groupRules" v-model="camp.GroupId" :items="grouplist" item-text="Name" item-value="ID" outlined dense></v-autocomplete>
                                     </v-col>
                                 </v-row>
+                                <v-row dense>
+                                    <v-col cols="12" md="3">
+                                        <v-subheader>ကမ်ပိန်းပြီးဆုံးချိန်
+                                            <span class="red--text title">*</span>
+                                        </v-subheader>
+                                    </v-col>
+                                    <v-col cols="12" md="6">
+                                        <date-picker
+                                        v-model="camp.closeddate"
+                                            valueType="YYYY-MM-DD"
+                                            format="DD/MM/YYYY"
+                                            :editable="true"
+                                            placeholder="ရွေးချယ်ပါ"
+                                            clearable
+                                        ></date-picker>
+                                        <span v-show="closeddatevalidate" style="letter-spacing: 0; font-size: 12px;" class="red--text ml-2">ကမ်ပိန်းပြီးဆုံးချိန် ထည့်ရန်လိုအပ်ပါသည်။</span>
+                                        <span v-show="closeddatecompare" style="letter-spacing: 0; font-size: 12px;" class="red--text ml-2">{{ closeddatecompareRule }}</span>
+                                    </v-col>
+                                </v-row>
 
                                 <v-row dense class="mb-5">
                                     <v-col cols="12" md="3">
@@ -131,10 +150,14 @@ export default {
             enddate: null,
             isExactActive: true,
             def: "1111",
+            closeddatevalidate:false,
+            closeddatecompare:false,
+            savevalidate:true,
             nameRules: [(v) => !!v || "ကမ်ပိန်းအမည်ထည့်ရန်လိုအပ်ပါသည်။"],
             groupRules: [(v) => !!v || "အုပ်စုရွေးရန်လိုအပ်ပါသည်။"],
             smsRules: [(v) => !!v || "ပေးပို့မည့်မက်ဆေ့ချ်စာသားထည့်ရန်လိုအပ်ပါသည်။"],
             closingsmsRules: [(v) => !!v || "အပိတ်မက်ဆေ့ချ်ထည့်ရန်လိုအပ်ပါသည်။"],
+            closeddatecompareRule:"",
             grouplist: [],
             smscodelist: [],
 
@@ -142,7 +165,6 @@ export default {
     },
     watch: {
         '$route'() {
-
             if (this.$route.params.campaignstatus === "success") {
                 this.snackbar = true;
                 this.color = "success";
@@ -159,7 +181,14 @@ export default {
                 this.GetSmsCode();
                 this.GetGroupList();
             }
-        }
+        },
+        'camp.closeddate'(val)
+    {      
+      if(val != null && val != undefined)
+      {
+        this.CalculateDate();
+      }
+    },
     },
 
     created() {
@@ -197,12 +226,19 @@ export default {
             });
         },
         ShowCampaignConfirmForm() {
+            console.lo
+            if(this.camp.closeddate =="" || this.camp.closeddate==null){
+                this.closeddatevalidate=true;
+                this.closeddatecompare=false;
+                this.savevalidate=false;
+            }
             if (!this.camp.Name || !this.camp.GroupId ||
                 !this.camp.SmsMessage || !this.camp.ClosingMessage ||
                 !this.selectedsmscode.ID) {
-
+                    this.savevalidate=false;
                 this.validate();
-            } else {
+            } 
+            if(this.savevalidate == true){
                 //Check Campaign Name is already exist
                 CampaignService.GetCampaignByName(this.camp.Name).then(
                     result => {
@@ -223,13 +259,13 @@ export default {
                                     smsmessage: this.camp.SmsMessage,
                                     closingmessage: this.camp.ClosingMessage,
                                     smscodeid: this.selectedsmscode.ID,
-                                    smscodetext: this.selectedsmscode.Sms_Code
+                                    smscodetext: this.selectedsmscode.Sms_Code,
+                                    closedDate:this.camp.closeddate,
                                 }
                             });
                         }
                     }
                 );
-
             }
         },
         validate() {
@@ -238,6 +274,19 @@ export default {
         reset() {
             this.$refs.form.reset();
             this.GetSmsCode();
+        },
+        CalculateDate(){
+            var closedate=new Date(this.camp.closeddate);
+            var todaydate=new Date();
+            this.closeddatevalidate=false;
+            if(closedate>todaydate){
+                this.closeddatecompare=false;   
+                this.savevalidate=true;
+            }
+            else{    
+                this.closeddatecompare=true;                
+                this.closeddatecompareRule="ကမ်ပိန်းပြီးဆုံးချိန်သည် ကမ်ပိန်းစတင်သည့်အချိန်ထက် ကြီးရပါမည်။"
+            }
         }
 
     }

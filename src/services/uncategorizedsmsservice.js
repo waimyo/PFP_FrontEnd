@@ -13,14 +13,16 @@ class UncategorizedSMSService{
                 sortOrder:para.sortOrder,
                 start:para.pageStart,
                 length:para.pageStop,
-                search:para.search,                
+                search:para.search,  
+                fromdate:para.fromdate,
+                todate:para.todate,               
             }
           
         }  
         return axios.get(API_URL+'/Sms',config);
           
     } 
-    GetAllForCategorized(para){                 
+    GetAllForCategorized(para){             
         let config={          
             headers: authHeader(),
             params:{
@@ -29,7 +31,9 @@ class UncategorizedSMSService{
                 sortOrder: para.sortOrder,
                 start: para.pageStart,
                 length: para.pageStop,
-                search:para.search,                
+                search:para.search,    
+                fromdate:para.fromdate,
+                todate:para.todate,            
             }
           
         }  

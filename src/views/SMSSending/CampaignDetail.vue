@@ -196,10 +196,11 @@
                             <td>{{ row.item.Mobile }}</td>
                             <td>{{ row.item.DepartmentName }}</td>
                             <td>{{ row.item.Gender }}</td>
-                            <td>{{ row.item.CategorizedResponse }}</td>
-                            <td>{{ row.item.ResponseMessage }}</td>
                             <td>{{ row.item.SmsMessage }}</td>
+                            <td>{{ row.item.ResponseMessage }}</td>
+                            <td>{{ row.item.CategorizedResponse }}</td>                            
                             <td>{{ row.item.ResponseMessageTime }}</td>
+                            <td>{{ row.item.township }}</td>
                         </tr>
                     </template>
                 </v-data-table>
@@ -385,25 +386,30 @@ export default {
                     text: "ကျား/မ",
                     value: "gender",
                     width: "100"
-                },
+                },  
                 {
-                    text: "တုန့်ပြန်မှုအမျိုးအစား",
-                    value: "responsetype",
-                    width: "200"
-                },
+                    text: "ပေးပို့ခဲ့သည့် မက်ဆေ့ချ်",
+                    value: "sentmessage",
+                    width: "500"
+                },              
                 {
                     text: "ပြန်စာ",
                     value: "responsemessage",
                     width: "100"
                 },
                 {
-                    text: "ပေးပို့ခဲ့သည့် မက်ဆေ့ချ်",
-                    value: "sentmessage",
-                    width: "500"
-                },
+                    text: "တုန့်ပြန်မှုအမျိုးအစား",
+                    value: "responsetype",
+                    width: "200"
+                },                
                 {
                     text: "ပြန်စာပေးပို့သည့်အချိန်",
                     value: "responsetime",
+                    width: "150"
+                },
+                {
+                    text: "မြို့နယ်",
+                    value: "township",
                     width: "150"
                 },
             ],
@@ -412,7 +418,7 @@ export default {
             pagination: {
                 descending: true, //sort order
                 page: 1, //current
-                itemsPerPage: 10,
+                itemsPerPage: 50,
                 pageStart: 1, //skip
                 pageStop: null, //length
                 // pageCount: 0,
@@ -420,7 +426,7 @@ export default {
                 campid: 0,
             },
             footerProps: {
-                "items-per-page-options": [10, 20, 30, 40, 50],
+                "items-per-page-options": [50,100,200,300,400,500],
             },
         };
     },
@@ -525,6 +531,7 @@ export default {
                         result.data.camplist.data.forEach(function (item) {
                             vm.detailist.push(item);
                         });
+                        console.log(vm.detailist);
                         //for categorization status
                         vm.categorization_status_series = [];
                         result.data.categorizationstatuslist.forEach((element) => {
@@ -592,7 +599,7 @@ export default {
             );
         },
         Filter() {
-            this.params.itemsPerPage = 10;
+            this.params.itemsPerPage = 50;
             this.params.page = 1;
 
             this.GetDetail();
@@ -606,21 +613,15 @@ export default {
         CloseCampaign() {
             this.campentry.Id = this.pagination.campid;
             CampaignService.CloseCampaign(this.campentry).then(
-                result => {
-                    if (result.data.success) {
-
-                        this.GetDetail();
-                        this.color = "success";
-                        this.text = "Campaign Closed!";
-                        this.snackbar = true;
-
-                    } else {
-
-                    }
-                }
-            );
+            result => {
+            if (result.data.success) {
+            this.GetDetail();
+            this.color = "success";
+            this.text = "Campaign Closed!";
+            this.snackbar = true;
+            } else {}
+            });
         }
-
     }
 };
 </script>
