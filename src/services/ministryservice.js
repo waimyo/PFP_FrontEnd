@@ -4,7 +4,6 @@ const API_URL=process.env.VUE_APP_API_ENDPOINT;
 
 class MinistryService{
     GetAll(para){
-        //alert(API_URL+'/Ministry')
         let config={
             headers: authHeader(),
             params:{

@@ -320,8 +320,7 @@ export default {
     messages() {
       return this.showMessages ? ["Active"] : undefined;
     },
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination
       };
@@ -354,7 +353,6 @@ export default {
     SaveName(newname, id) {
       var dt=this;
       if(newname==null || newname=="" || newname==" "){
-        //alert("name is not null or empty");   
         //dt.color = "red";
         dt.snackbar = true;
         dt.text = "အမည်ထည့်ရန်လိုအပ်ပါသည်။";     

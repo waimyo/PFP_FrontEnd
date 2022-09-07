@@ -78,7 +78,6 @@ export default new (class CampaignService {
   }
 
   InsertData(camp) {
-    console.log(camp);
     return axios.post(
       API_URL + "/campaignsentry/saveorupdate/",
       {

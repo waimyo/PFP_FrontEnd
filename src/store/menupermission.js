@@ -9,13 +9,9 @@ export const menupermission = {
     },
     getters: {
         getPermissionByMenuForView: (state) => (program_code, action) => {
-
-            // window.console.log(state)
-            // window.console.log(state.menuList[1].children)
             var allpermission = [];
             state.menuList.forEach(function(item) {
                 allpermission.push(item);
-                // console.log(item, index);
                 item.children.forEach(function(childrenitem) {
                     allpermission.push(childrenitem);
                 });
@@ -30,7 +26,6 @@ export const menupermission = {
         },
         // getPermissionByChildrenMenuForView: (state) => (program_code, action) => {
         //     state.permission = state.menuList.children.filter(m => m.program_name === program_code && m.view === action);
-        //     window.console.log(state)
         //     if (state.permission.length > 0) {
         //         return true;
         //     } else {

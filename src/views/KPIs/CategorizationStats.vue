@@ -253,8 +253,7 @@ export default {
     messages() {
       return this.showMessages ? ["Active"] : undefined;
     },
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination,
       };
@@ -410,7 +409,6 @@ export default {
   //     var vm = this;
 
   //     CategorizationService.GetExcelData(vm.ministry_id,vm.fromdate,vm.todate).then(response => {
-  //         console.log(response);
   //         const url = window.URL.createObjectURL(new Blob([response.data]));
   //         $("#mylink").attr("href", url);
   //         $("#mylink").attr("download", "file.xls");

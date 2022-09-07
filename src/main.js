@@ -34,7 +34,6 @@ new Promise(resolve => {
     MenuPermissionService.GeAllMenuPermission()
         .then(response => {
             store.state.menupermission.menuList = response.data;
-            //window.console.log()
             new Vue({
                 vuetify,
                 router,

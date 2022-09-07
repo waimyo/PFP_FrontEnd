@@ -277,8 +277,7 @@ export default {
     },
 
     computed: {
-        params(nv) {
-            console.log(nv);
+        params() {
             return {
                 ...this.pagination,
             };

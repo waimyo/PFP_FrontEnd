@@ -132,6 +132,13 @@
               >
               <a href="#" id="mylink"></a> -->
             </v-list-item>
+            <v-list-item>
+              <a style="font-size: 13px" @click="ServiceExportExcel" small outlined>
+                <v-icon color="indigo">mdi-download</v-icon>Service Download
+                ရယူရန်</a
+              >
+              <a href="#" id="mylink"></a>              
+            </v-list-item>
           </v-list>
         </v-card>
       </v-menu>
@@ -322,6 +329,7 @@ import MinistryEntry from "../views/Data Management/MinistryEntry";
 import MinistryService from "../services/ministryservice";
 
 import LocationService from "../services/locationservice";
+import ServiceService from "../services/serviceservice";
 
 import $ from "jquery";
 
@@ -383,7 +391,6 @@ export default {
     },
 
     getImage(poster) {
-      // alert("poster"+poster)
       return poster ? require("" + poster) : "";
     },
 
@@ -411,6 +418,18 @@ export default {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         $("#mylink").attr("href", url);
         $("#mylink").attr("download", "Location.xls");
+        $("#mylink")[0].click();
+        vm.excelloading = false;
+      });
+    },
+
+    ServiceExportExcel() {
+      var vm = this;
+      vm.excelloading = true;
+      ServiceService.GetExcelDataForDownload().then((response) => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        $("#mylink").attr("href", url);
+        $("#mylink").attr("download", "Service.xls");
         $("#mylink")[0].click();
         vm.excelloading = false;
       });

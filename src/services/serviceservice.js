@@ -48,7 +48,21 @@ class ServicesService{
       
         return axios.get(API_URL+'/service/ExcelExport',config);
     }
-    
+    GetExcelDataForDownload() {
+        let config={
+            headers: authHeader(),
+            params:{
+                draw:1,
+                sortBy:"id",
+                sortOrder:"desc",
+                start:1,
+                length:-1,
+            },
+            responseType: "blob",
+        }
+      
+        return axios.get(API_URL+'/service/ExcelExport',config);
+    }
     DeleteData(cate){
         return axios.delete(API_URL+'/service/'+cate.id,{headers: authHeader()});
     }

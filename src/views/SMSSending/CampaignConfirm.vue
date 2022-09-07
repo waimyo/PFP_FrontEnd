@@ -109,7 +109,6 @@ export default {
             CampaignService.GetCampaignConfirmList(this.camp.GroupId).then(result => {
 
                 for (var i in result.data) {
-                    console.log(this.$route.query);
                     var obj = {};
                     obj["from"] = this.$route.query.smscodetext;
                     obj["to"] = result.data[i];
@@ -121,7 +120,6 @@ export default {
             })
         },
         Insert() {
-            console.log(this.camp);
             CampaignService.InsertData(this.camp).then(
                 result => {
                     if (result.data.success) {
@@ -132,7 +130,6 @@ export default {
                                 campaignmessage: 'Success! The new campaign has started.'
                             }
                         });
-                        //alert("success");
                     } else {
                         this.$router.push({
                             name: 'CampaignEntry',

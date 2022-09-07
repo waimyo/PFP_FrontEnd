@@ -55,7 +55,6 @@ export default {
         this.$router.push({ name: "Home" });
       }
       else{
-        //alert("datalist")
         this.$router.push({ path: "/DataList" });
       }
     }

@@ -175,6 +175,18 @@
                           >
                           <a href="#" id="mylink"></a>
 
+                          <v-btn
+              v-show="udata.role_id != 1"
+               :disabled="disab"
+               @click="newItem()" 
+                    small
+                    outlined
+                    dense
+                    color="warning"
+                    >ဖုန်းနံပါတ်အုပ်စုအသစ်ထည့်ရန် <GroupEntry ref="GroupEntryModal"
+              /></v-btn
+                  >
+
                     </v-col>
                     <v-col cols="12" md="6">
                         <v-row dense>
@@ -189,21 +201,33 @@
                     </v-col>
                 </v-row>
 
-                <v-data-table :disable-sort="isDisabled" :headers="headers" :items="detailist" :options.sync="pagination" :server-items-length="totaldetail" :footer-props="footerProps">
+                <v-data-table  
+                v-model="selected"
+                item-key="datainfo_id"
+                :show-select="udata.role_id == 1 ? false : true" 
+                :disable-sort="isDisabled" 
+                :headers="headers" 
+                :items="detailist" 
+                :options.sync="pagination" 
+                :server-items-length="totaldetail" 
+                :footer-props="footerProps">
+                </v-data-table>
+                
                     <template v-slot:item="row">
                         <tr>
-                            <td>{{ row.item.Name }}</td>
-                            <td>{{ row.item.Mobile }}</td>
-                            <td>{{ row.item.DepartmentName }}</td>
-                            <td>{{ row.item.Gender }}</td>
-                            <td>{{ row.item.SmsMessage }}</td>
-                            <td>{{ row.item.ResponseMessage }}</td>
-                            <td>{{ row.item.CategorizedResponse }}</td>                            
-                            <td>{{ row.item.ResponseMessageTime }}</td>
+                            <td>{{ row.item.status }}</td>
+                            <td>{{ row.item.name }}</td>
+                            <td>{{ row.item.mobile }}</td>
+                            <td>{{ row.item.departmentname }}</td>
+                            <td>{{ row.item.gender }}</td>
+                            <td>{{ row.item.smsmessage }}</td>
+                            <td>{{ row.item.responsemessage }}</td>
+                            <td>{{ row.item.categorizedresponse }}</td>                            
+                            <td>{{ row.item.responsemessagetime }}</td>
                             <td>{{ row.item.township }}</td>
                         </tr>
                     </template>
-                </v-data-table>
+                    
             </v-col>
         </v-card>
     </v-col>
@@ -215,8 +239,12 @@
 import CampaignDetail from '../../models/campaigndetail';
 import CampaignEntry from '../../models/campaignsentry';
 import CampaignService from '../../services/campaignservice';
+import GroupEntry from "../SMSSending/GroupFromCampaign.vue";
 import $ from "jquery";
 export default {
+    components: {
+        GroupEntry,
+  },
     data() {
         return {
             excelloading: false,
@@ -225,15 +253,6 @@ export default {
             categorization_status_data: {
                 type: "pie",
                 height: "250px",
-                // title: {
-                //     text: "Total Transaction By Payment Methods",
-                //     marginTop: "10px",
-                //     fontFamily: '"Roboto", sans-serif',
-                //     fontWeight: "500",
-                //     fontSize: "18px",
-                //     adjustLayout: true,
-                // },
-
                 legend: {
                     adjustLayout: true,
                     x: "60%",
@@ -243,22 +262,13 @@ export default {
                     "border-width": 0,
                     "border-color": "gray",
                     "border-radius": "5px",
-
-                    // marker: {
-                    //     type: "circle",
-                    // },
-
                     icon: {
                         "line-color": "#9999ff",
                     },
-                    // "max-items": 8,
-                    // overflow: "scroll",
                 },
                 plotarea: {
                     adjustLayout: true,
-                    //"margin-top": "20%",
                     "margin-right": "25%",
-                    //"margin-bottom": "12%",
                 },
                 plot: {
                     "value-box": {
@@ -270,37 +280,15 @@ export default {
                         "font-color": "white",
                     },
                     tooltip: {
-                        // text: "%t: %v (%npv%)",
                         text: "%t",
-                        // "font-color": "black",
-                        // "font-family": "Georgia",
-                        // "text-alpha": 1,
-                        // "background-color": "white",
-                        // alpha: 0.7,
-                        // "border-width": 1,
-                        // "border-color": "#cccccc",
-                        // "line-style": "dotted",
-                        // "border-radius": "5px",
-                        // padding: "10%",
-                        //placement: "node:center",
                     },
                     "border-width": 1,
                     "border-color": "#cccccc",
-                    //"line-style": "dotted",
                 },
             },
             categorization_ratio_data: {
                 type: "ring",
                 height: "250px",
-                // title: {
-                //     text: "Total Transaction By Payment Methods",
-                //     marginTop: "10px",
-                //     fontFamily: '"Roboto", sans-serif',
-                //     fontWeight: "500",
-                //     fontSize: "18px",
-                //     adjustLayout: true,
-                // },
-
                 legend: {
                     adjustLayout: true,
                     x: "67%",
@@ -310,22 +298,13 @@ export default {
                     "border-width": 0,
                     "border-color": "gray",
                     "border-radius": "5px",
-
-                    // marker: {
-                    //     type: "circle",
-                    // },
-
                     icon: {
                         "line-color": "#9999ff",
                     },
-                    // "max-items": 8,
-                    // overflow: "scroll",
                 },
                 plotarea: {
                     adjustLayout: true,
-                    //"margin-top": "20%",
                     "margin-right": "15%",
-                    //"margin-bottom": "12%",
                 },
                 plot: {
                     "value-box": {
@@ -337,23 +316,10 @@ export default {
                         "font-color": "white",
                     },
                     tooltip: {
-                        // text: "%t: %v (%npv%)",
                         text: "%t",
-                        // "font-color": "black",
-                        // "font-family": "Georgia",
-                        // "text-alpha": 1,
-                        // "background-color": "white",
-                        // alpha: 0.7,
-                        // "border-width": 1,
-                        // "border-color": "#cccccc",
-                        // "line-style": "dotted",
-                        // "border-radius": "5px",
-                        // padding: "10%",
-                        //placement: "node:center",
                     },
                     "border-width": 1,
                     "border-color": "#cccccc",
-                    //"line-style": "dotted",
                 }
             },
             snackbar: false,
@@ -367,7 +333,15 @@ export default {
             campdetail: new CampaignDetail(),
             campentry: new CampaignEntry(),
             search: "",
-            headers: [{
+            udata: [],
+            disab : true,
+            headers: [
+            {
+                    text: "Status",
+                    value: "status",
+                    width: "150"
+                },
+                {
                     text: "အမည်",
                     value: "name",
                     width: "100"
@@ -379,7 +353,7 @@ export default {
                 },
                 {
                     text: "ဌာန/အဖွဲ့အစည်း",
-                    value: "department",
+                    value: "departmentname",
                     width: "150"
                 },
                 {
@@ -389,7 +363,7 @@ export default {
                 },  
                 {
                     text: "ပေးပို့ခဲ့သည့် မက်ဆေ့ချ်",
-                    value: "sentmessage",
+                    value: "smsmessage",
                     width: "500"
                 },              
                 {
@@ -399,14 +373,14 @@ export default {
                 },
                 {
                     text: "တုန့်ပြန်မှုအမျိုးအစား",
-                    value: "responsetype",
+                    value: "categorizedresponse",
                     width: "200"
                 },                
                 {
                     text: "ပြန်စာပေးပို့သည့်အချိန်",
-                    value: "responsetime",
+                    value: "responsemessagetime",
                     width: "150"
-                },
+                },                
                 {
                     text: "မြို့နယ်",
                     value: "township",
@@ -415,6 +389,7 @@ export default {
             ],
             detailist: [],
             totaldetail: 0,
+            selected: {"id":null},
             pagination: {
                 descending: true, //sort order
                 page: 1, //current
@@ -436,7 +411,15 @@ export default {
                 this.GetDetail();
             },
             deep: true
-        }
+        },
+        selected(val) {
+      var rowcount = val.length;   
+      if (rowcount > 0) {
+        this.disab = false;
+      } else {
+        this.disab = true;
+      }
+    },
     },
     computed: {
         params(nv) {
@@ -486,6 +469,7 @@ export default {
     },
     created() {
         this.$emit("eventname", true);
+        this.udata = JSON.parse(localStorage.getItem("user"));
         this.pagination.campid = this.$route.query.campaignid;
         if (this.$store.state.auth.user.role_id == 1) {
             this.issuperadmin = true;
@@ -531,7 +515,6 @@ export default {
                         result.data.camplist.data.forEach(function (item) {
                             vm.detailist.push(item);
                         });
-                        console.log(vm.detailist);
                         //for categorization status
                         vm.categorization_status_series = [];
                         result.data.categorizationstatuslist.forEach((element) => {
@@ -621,7 +604,12 @@ export default {
             this.snackbar = true;
             } else {}
             });
-        }
+        },
+
+        newItem() {
+      this.$refs.GroupEntryModal.dialog = true;
+      this.$refs.GroupEntryModal.datainfolist = this.selected;
+    },
     }
 };
 </script>

@@ -1198,7 +1198,6 @@ export default {
                 vm.model.ministry_acc_id,
                 vm.model.userid
             ).then(response => {
-                //console.log(response);
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 $("#mylink").attr("href", url);
                 $("#mylink").attr("download", "file.xls");

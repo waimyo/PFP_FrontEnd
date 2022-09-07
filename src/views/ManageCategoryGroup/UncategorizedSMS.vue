@@ -228,8 +228,7 @@ export default {
     messages() {
       return this.showMessages ? ["Active"] : undefined;
     },
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination,
       };
@@ -326,7 +325,6 @@ export default {
       var vm = this;
       vm.isDisabled = true;
       vm.rowcount = vm.selected.length;
-     // window.console.log("ssssssssss "+vm.selected+","+vm.category_id);
       this.$confirm("Do you really want to be categorizedSMS?", {
         title: "Categorized SMS",
         color: "primary",

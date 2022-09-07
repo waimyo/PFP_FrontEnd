@@ -313,7 +313,6 @@ export default {
       if (val != null || val == undefined) {
         this.datainfovalidate = false;
       } else {
-        //alert(val)
         this.datainfovalidate = true;
       }
     },
@@ -327,8 +326,7 @@ export default {
     },
   },
   computed: {
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination,
       };
@@ -337,7 +335,6 @@ export default {
   created() {
     this.$emit("eventname", true);
     this.gid = this.$route.query.groupId;
-    // alert("Group Id " + this.gid);
     this.udata = JSON.parse(localStorage.getItem("user"));
     this.userid = this.udata.id;
     this.GetDataList();
@@ -351,7 +348,6 @@ export default {
         
     GetDataList() {
       var vm = this;
-      //alert("uid " + this.userid)
       DropdownService.GetDataList().then((result) => {
         vm.datalist = result.data;
       });
@@ -430,6 +426,19 @@ export default {
       
     },
 
+    CreateGroup(item){
+        this.$confirm("Are you sure you want to delete this item?").then((result) => {
+        if (result) {
+          this.$router.push({
+          name: "GroupConfirm",
+          params: {
+            glist: item,
+          },
+        });
+        }
+      });
+    },
+
     Filter() {
       this.params.itemsPerPage = 10;
       this.params.page = 0;
@@ -458,7 +467,6 @@ export default {
         GroupService.InsertDataForDataList(vm.group).then((result) => {
           if (result.data.success) {
             vm.datainfovalidate = false;
-            //alert(vm.datainfovalidate)
             vm.color = "success";
             vm.group = [];
           } else {

@@ -247,8 +247,7 @@ export default {
     },
 
     computed: {
-        params(nv) {
-            console.log(nv);
+        params() {
             return {
                 ...this.pagination,
             };
@@ -288,7 +287,6 @@ export default {
             });
         },
         OnChangeMinistry() {
-            //alert("hello ser");
             var vm = this;
             DropdownService.GetAllCPUAccountByMinistry(vm.group.ministry_id).then((result) => {
                 vm.cpulist = result.data;
@@ -309,7 +307,6 @@ export default {
             params.pageStop = params.itemsPerPage;
             params.pageStart = params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
             //params.search = this.group;
-            //alert("getall")
             params.draw = this.draw;
             if (params.sortDesc) {
                 params.descending = params.sortDesc[0];

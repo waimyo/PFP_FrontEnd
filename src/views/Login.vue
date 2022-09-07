@@ -113,7 +113,6 @@ export default {
           this.$store.state.menupermission.menuList = response.data;
           resolve(response);
            if(result.role_id == 4){
-             //alert(result.role_id)
               this.$router.push({ name: "DataList" });
             }
             else{

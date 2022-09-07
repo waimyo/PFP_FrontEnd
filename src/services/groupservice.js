@@ -45,15 +45,12 @@ class GroupService {
     }
 
     DeleteData(selectrows) {
-        // window.console.log(selectrows)
         return axios.post(API_URL + '/DeleteSelectedRow', {
             selectrows: selectrows
         }, { headers: authHeader() });
     }
 
     // DeleteData(dept) {
-    //     window.console.log(dept)
-    //         // alert("hay delete")
     //     return axios.delete(API_URL + "/" + dept.id, { headers: authHeader() });
     // }
 
@@ -64,7 +61,6 @@ class GroupService {
     }
 
     GetAllGroup(para, gp) {
-        //alert("hello getall" + para.search.sender_group_id);
         let config = {
             headers: authHeader(),
             params: {
@@ -87,7 +83,6 @@ class GroupService {
 
 
     GetAllGroupMember(para, gid) {
-        // alert("hello getall member" + gid);
         let config = {
             headers: authHeader(),
             params: {
@@ -105,18 +100,24 @@ class GroupService {
 
 
     GetById(id) {
-        // alert("Get " + id)
         return axios.get(API_URL + '/GetById?id=' + id, { headers: authHeader() });
     }
 
 
     InsertDataForDataList(gp) {
-        // alert("glist " + gp.name + " " + itemlist)
         return axios.post(API_URL + '/InsertDataForData', {
             group_id: gp.group_id,
             datainfo: gp.datainfo,
             //GMList: itemlist,
         }, { headers: authHeader() });
+    }
+
+    CreateGroupFromCampaign(gpname,selectrows){
+        return axios.post(API_URL1+'/CreateGroup',{   
+           gpname:gpname,
+            selectrows:selectrows,
+        },{headers: authHeader()});
+    
     }
 }
 

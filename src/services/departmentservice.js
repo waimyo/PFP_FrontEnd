@@ -45,7 +45,6 @@ class DepartmentService {
     }
 
     DeleteData(dept) {
-        //alert("hay delete")
         return axios.delete(API_URL + "/" + dept.id, { headers: authHeader() });
     }
 

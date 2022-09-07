@@ -132,7 +132,6 @@ export default {
                         } else {
 
                             vm.color = "red";
-                            //alert("fail");
                         }
                         vm.isDisabled = false;
                         vm.snackbar = true;

@@ -48,10 +48,8 @@ const routes = [{
             const loggedIn = JSON.parse(localStorage.getItem("user"));
             if (loggedIn) {
                 if (loggedIn.role_id == 4) {
-                    // alert("4");
                     next("/DataList");
                 } else {
-                    //alert("not 4");
                     next("/home");
                 }
             }

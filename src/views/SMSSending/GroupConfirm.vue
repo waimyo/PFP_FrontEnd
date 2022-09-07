@@ -163,8 +163,7 @@ export default {
   },
 
   computed: {
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination,
       };
@@ -196,7 +195,6 @@ export default {
 
         //params.search = vm.search;
         params.search = this.glist;
-        // alert("id " + this.glist.uploadedby);
         params.draw = this.draw;
         //params.descending = params.sortDesc[0];
         if (params.descending == true) {

@@ -152,7 +152,7 @@
                       <v-subheader>Uploaded By</v-subheader>
                     </v-col>
                     <v-col cols="12" md="6">
-                      <v-autocomplete
+                      <!--v-autocomplete
                         v-model="group.uploadedby"
                         item-text="name"
                         item-value="id"
@@ -160,7 +160,52 @@
                         outlined
                         dense
                         :rules="uploadRules"
-                      ></v-autocomplete>
+                        chips
+                        small-chips
+                        multiple
+                        required
+                        clearable
+                        autocomplete="off"
+                      >
+                    </v-autocomplete-->
+                    <v-autocomplete
+                          v-model="group.uploadedby"
+                          :items="userlist"
+                          :rules="uploadRules"
+                          required
+                          small-chips
+                          deletable-chips
+                          chips
+                          outlined
+                          dense
+                          item-text="name"
+                          item-value="id"
+                          autocomplete="off"
+                          multiple >
+                          <template v-slot:selection="{ item }">
+                          <v-chip small label color="primary">
+                            {{ item.name }}
+                          </v-chip>
+                        </template>
+                          <template v-slot:prepend-item>
+        <v-list-item
+          ripple
+          @click="toggle"
+        >
+          <v-list-item-action>
+            <v-icon :color="group.uploadedby.length > 0 ? 'indigo darken-4' : ''">
+              {{ icon }}
+            </v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Uploaded by All
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider class="mt-2"></v-divider>
+      </template>
+                        </v-autocomplete>
                     </v-col>
                   </v-row>
 
@@ -254,6 +299,19 @@ export default {
     //   }
     // },
   },
+  computed: {
+    likesAllFruit () {
+        return this.group.uploadedby.length === this.userlist.length
+      },
+      likesSomeFruit () {
+        return this.group.uploadedby.length > 0 && !this.likesAllFruit
+      },
+      icon () {
+        if (this.likesAllFruit) return 'mdi-close-box'
+        if (this.likesSomeFruit) return 'mdi-minus-box'
+        return 'mdi-checkbox-blank-outline'
+      },
+  },
 
   created() {
     this.$emit("eventname", true);
@@ -293,7 +351,6 @@ export default {
       });
     },
     OnChangeDepartment() {
-      //alert("hello ser");
       var vm = this;
       DropdownService.GetService(vm.group.department_id).then((result) => {
         vm.servicelist = result.data;
@@ -308,23 +365,20 @@ export default {
     //   var vm = this;
     //   DropdownService.GetCreatedDateList(1).then((result) => {
     //     vm.createddatelist = result.data;
-    //     window.console.log(vm.createddatelist);
     //   });
     // },
     GetUserList() {
       var vm = this;
       DropdownService.GetUserList(vm.group.userid).then((result) => {
         vm.userlist = result.data;
-        vm.userlist.splice(0, 0, {
-          id: 0,
-          name: "Uploaded by All",
-        });
-        //window.console.log(vm.userlist);
+        // vm.userlist.splice(0, 0, {
+        //   id: 0,
+        //   name: "Uploaded by All",
+        // });
       });
     },
 
     NextStep() {
-      //alert(this.group.name + " " + this.group.uploadedby);
       // if (
       //   (this.group.fromdate == "" || this.group.fromdate == null) &&
       //   (this.group.todate == "" || this.group.todate == null)
@@ -332,7 +386,6 @@ export default {
       //   this.fdatevalidate = true;
       //   this.tdatevalidate = true;
       // }
-      //alert(this.group.name);
       if (
         // this.group.name == "" ||
         // this.group.name == null ||
@@ -353,7 +406,6 @@ export default {
       ) {
         this.validate();
       } else {
-        //alert("hello ");
         this.$router.push({
           name: "GroupConfirm",
           params: {
@@ -375,6 +427,18 @@ export default {
     reset() {
       this.$refs.form.reset();
     },
+    toggle () {
+        this.$nextTick(() => {
+          if (this.likesAllFruit) {
+            this.group.uploadedby = []
+          } else {
+            this.group.uploadedby = [];
+          this.userlist.forEach(user => {
+            this.group.uploadedby.push(user.id)
+          });
+          }
+        })
+      },
   },
 
   updated() {

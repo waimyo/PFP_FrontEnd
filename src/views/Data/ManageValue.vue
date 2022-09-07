@@ -146,14 +146,12 @@ export default {
   },
   
   computed: {
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination,
       };
     },
-    params1(nv) {
-      console.log(nv);
+    params1() {
       return {
         ...this.pagination1,
       };

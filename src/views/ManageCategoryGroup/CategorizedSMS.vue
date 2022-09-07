@@ -178,8 +178,7 @@ export default {
     messages() {
       return this.showMessages ? ["Active"] : undefined;
     },
-    params(nv) {
-      console.log(nv);
+    params() {
       return {
         ...this.pagination,
       };

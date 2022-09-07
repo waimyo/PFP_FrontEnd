@@ -135,7 +135,7 @@ export default {
                 {
                     text: "DEO ACCOUNTS",
                     sortable: false,
-                    width: "100"
+                    width: "200"
                 },
                 {
                     text: "Created Date",
@@ -184,8 +184,7 @@ export default {
         messages() {
             return this.showMessages ? ["Active"] : undefined;
         },
-        params(nv) {
-            console.log(nv);
+        params() {
             return {
                 ...this.pagination,
             };

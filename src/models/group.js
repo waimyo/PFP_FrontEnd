@@ -16,7 +16,7 @@ export default class Group {
     group_member = "";
     department_id = 0;
     service_id = 0;
-    uploadedby = 0;
+    uploadedby = [];
     constructor() {
 
     }
