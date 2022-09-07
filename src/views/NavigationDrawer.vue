@@ -40,6 +40,11 @@
             >mdi-information-outline</v-icon
           > နေရာကို နှိပ်၍ Download ရယူနိုင်ပါသည်။ Location File အသစ်ဖြင့် Data Entry ပြုလုပ်ရန်ဖြစ်ပါကြောင်း အသိပေးအပ်ပါသည်။ </h5></marquee>-->
       
+          <div class="mr-7">
+            <v-badge color="warning" :content="msgcount" :value="msgcount">
+              <v-icon>mdi-email</v-icon>
+            </v-badge>
+          </div>
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
@@ -324,14 +329,13 @@
 import ChangePwd from "../views/ChangePassword/ChangePwd";
 import AccountService from "../services/accountservice";
 import Account from "../models/account";
-
 import MinistryEntry from "../views/Data Management/MinistryEntry";
 import MinistryService from "../services/ministryservice";
-
 import LocationService from "../services/locationservice";
 import ServiceService from "../services/serviceservice";
-
+import InboundOutboundService from "../services/inboxoutbox.service";
 import $ from "jquery";
+import * as signalR from "@aspnet/signalr";
 
 export default {
   components: {
@@ -350,14 +354,25 @@ export default {
       show: false,
       menu: false,
       menu1: false,
-
       excelloading: false,
+      msgcount:0,
     };
   },
 
   created() {
-    this.getMenu();
-    this.udata = JSON.parse(localStorage.getItem("user"));
+    var vm=this;
+    vm.getMenu();
+    vm.GetCountUnreadMessage();
+    vm.udata = JSON.parse(localStorage.getItem("user"));
+    var connection = "";    
+    connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:44315/chatHub")
+      .build();
+    connection.start();
+    connection.on("ReceiveNoti", function (bcount) {
+      console.log("private bcount " + bcount);
+      vm.GetCountUnreadMessage();
+    });
   },
 
   methods: {
@@ -409,6 +424,13 @@ export default {
         this.$refs.PasswordModal.isshowcurrentpassword = false;
         this.$refs.PasswordModal.dialog = true;
       });
+    },
+
+    GetCountUnreadMessage(){
+      let vm=this;
+      InboundOutboundService.GetCountUnread().then((result)=>{
+        vm.msgcount=result.data;
+      })
     },
 
     ExportExcel() {

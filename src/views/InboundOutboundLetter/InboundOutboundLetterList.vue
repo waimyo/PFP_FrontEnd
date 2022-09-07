@@ -59,7 +59,7 @@
                     <v-data-table :disable-sort="isDisabled" :headers="headers" :items="itemlist" :options.sync="pagination" :server-items-length="total" :footer-props="footerProps">
                         <template v-slot:item="row">
                             <!-- <tr @mouseover="c_index = row.index" @mouseleave="c_index = -1"> -->
-                            <tr>
+                            <tr :class="{'light-blue lighten-4': row.item.isread == false}">
                                 <td>
                                     <!-- <v-icon color="success" right v-show="row.index == c_index"
                       >mdi-eye</v-icon

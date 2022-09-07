@@ -61,6 +61,7 @@ import InboundOutboundLetterEntry from "../InboundOutboundLetter/InboundOutbound
 import InboxOutboxService from "../../services/inboxoutbox.service";
 import DropDownService from "../../services/dropdownservice";
 import inboxoutboxService from '../../services/inboxoutbox.service';
+import * as signalR from "@aspnet/signalr";
 
 export default {
   components: {
@@ -76,9 +77,11 @@ export default {
     receiver_id:0,
     panelcolor:"",
     datalist:[],
+    connection: "",
   }),
   computed: {},
   created() {
+    
     this.panelcolor="#E1F5FE";
     this.$emit("eventname", true);
     this.chatting_id=this.$route.query.chatting_id;
@@ -92,9 +95,18 @@ export default {
     else{
       this.receiver_id=user.parent_id;
     }
+    this.connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:44315/chatHub")
+      .build();
+    this.connection.start();
     this.GetAllData();
   },
   methods: {
+    SendNoti() {
+      this.connection.invoke("SendNoti").catch(function (err) {
+        return console.error(err);
+      });
+    },
     GetDEOByChatId(){
       var vm=this;
       DropDownService.GetDEOAccountByChattingId(this.chatting_id).then((result)=>{
@@ -122,6 +134,7 @@ export default {
       InboxOutboxService.GetDetailData(this.chatting_id).then((res)=>{
         vm.datalist=res.data;
         vm.loading=false;
+        vm.SendNoti();
       })
     },
     DownloadFile(file){

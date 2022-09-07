@@ -61,4 +61,7 @@ export default new(class InboxOutboxService {
     UpdateStatus(chatid){
         return axios.post(API_URL + '/Chatting/UpdateStatus', {chatid: chatid}, { headers: authHeader() });
     }
+    GetCountUnread(){
+        return axios.get(API_URL + '/Chatting/GetCountUnread',{ headers: authHeader() });
+    }
 })();

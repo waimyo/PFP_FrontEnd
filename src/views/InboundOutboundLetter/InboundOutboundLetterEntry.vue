@@ -158,6 +158,7 @@
 //import DropDownService from "../../services/dropdownservice";
 import InboxOutboxService from "../../services/inboxoutbox.service";
 import InboxOutbox from "../../models/inboxoutbox";
+import * as signalR from "@aspnet/signalr";
 
 export default {
   data() {
@@ -175,6 +176,7 @@ export default {
       text: "",
       x: "right",
       y: "top",
+      connection:"",
       receiverRules:[(v) => !!v || "DEO Account ရွေးရန်လိုအပ်ပါသည်။"],
       descriptionRules:[(v) => !!v || "Description ထည့်ရန်လိုအပ်ပါသည်။"],
     };
@@ -194,6 +196,10 @@ export default {
   },
   created() {
     this.$emit("eventname", true);
+    this.connection = new signalR.HubConnectionBuilder()
+      .withUrl("https://localhost:44315/chatHub")
+      .build();
+    this.connection.start();
   },
   methods:{
     Insert(){
@@ -252,6 +258,7 @@ export default {
               this.$emit("getDetailData");
             }
             } 
+            vm.SendNoti();
             }
               else{
                 vm.color="red";
@@ -268,6 +275,12 @@ export default {
         reset() {
             this.$refs.form.reset();
         },
+        SendNoti() {
+      //var aa=this.book.bookcount;
+      this.connection.invoke("SendNoti").catch(function (err) {
+        return console.error(err);
+      });
+    },
 
         toggle () {
         this.$nextTick(() => {
