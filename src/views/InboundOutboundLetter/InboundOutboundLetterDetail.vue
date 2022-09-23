@@ -103,6 +103,7 @@ export default {
   },
   methods: {
     SendNoti() {
+      this.connection.start();
       this.connection.invoke("SendNoti").catch(function (err) {
         return console.error(err);
       });

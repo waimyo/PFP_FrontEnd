@@ -59,11 +59,12 @@ export default {
     };
   },
   created() {
-    this.getannouncement();
+    //this.getannouncement();
   },
   methods: {
     updateparent(val) {
       this.valid = val;
+      this.getannouncement();
     },
     getannouncement(){
       var vm=this;

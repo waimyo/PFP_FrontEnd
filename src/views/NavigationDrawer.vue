@@ -35,14 +35,11 @@
         </h4>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <!--
-      <marquee> <h5 class="black--text pl-5">တိုင်းဒေသကြီး/ပြည်နယ်များရှိ ခရိုင်နှင့် မြို့နယ်များ အသစ်ပြင်ဆင်ဖွဲ့စည်းမှုကို Web Portal တွင် Update ပြုလုပ်ထားပါသဖြင့်  ညာဘက်ထောင့်ရှိ <v-icon size="22" v-bind="attrs" v-on="on" class=""
-            >mdi-information-outline</v-icon
-          > နေရာကို နှိပ်၍ Download ရယူနိုင်ပါသည်။ Location File အသစ်ဖြင့် Data Entry ပြုလုပ်ရန်ဖြစ်ပါကြောင်း အသိပေးအပ်ပါသည်။ </h5></marquee>-->
-      
-          <div class="mr-7">
+          <div class="mr-7" v-if="udata.role_id == 3 || udata.role_id == 4">
             <v-badge color="warning" :content="msgcount" :value="msgcount">
+              <router-link :to="{ path: '/InboundOutboundLetterList' }">
               <v-icon>mdi-email</v-icon>
+            </router-link>
             </v-badge>
           </div>
       <v-menu
@@ -456,6 +453,12 @@ export default {
         vm.excelloading = false;
       });
     },
+    ChatList(){
+      alert("charlist");
+      this.$router.push({
+                                name: "CampaignConfirm",
+                            });
+    }
   },
 
   computed: {
