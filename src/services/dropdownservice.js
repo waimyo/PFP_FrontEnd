@@ -40,11 +40,11 @@ class DropDownService {
         return axios.get(API_URL + '/DropDown/GetCreatedDateList?ministryid=' + ministry_id)
     }
     GetUserList(ministry_id) {
-            return axios.get(API_URL + '/DropDown/GetUserList?ministryid=' + ministry_id)
-        }
-        // GetAllCPUAccount(minid) {
-        //     return axios.get(API_URL + '/Dropdown/GetAllCPUAccount?ministry_id=' + minid);
-        // }
+        return axios.get(API_URL + '/DropDown/GetUserList?ministryid=' + ministry_id)
+    }
+    // GetAllCPUAccount(minid) {
+    //     return axios.get(API_URL + '/Dropdown/GetAllCPUAccount?ministry_id=' + minid);
+    // }
     GetCategory() {
         return axios.get(API_URL + '/DropDown/GetCategory');
     }
@@ -69,6 +69,11 @@ class DropDownService {
     GetRoleByNotDefault() {
         return axios.get(API_URL + "/DropDown/GetRoleByNotDefault");
     }
+    GetCPUAccount() {
+        return axios.get(API_URL + "/DropDown/GetAllCPUAccount", {
+            headers: authHeader(),
+        });
+    }
     GetDEOAccount() {
         return axios.get(API_URL + "/DropDown/GetAllDEOAccount", {
             headers: authHeader(),
@@ -76,6 +81,12 @@ class DropDownService {
     }
     GetDEOAccountByChattingId(chatid) {
         return axios.get(API_URL + "/DropDown/GetDEOAccountByChatting?chat_id=" + chatid);
+    }
+    GetCPUAccountByChattingId(chatid) {
+        return axios.get(API_URL + "/DropDown/GetCPUAccountByChatting?chat_id=" + chatid);
+    }
+    GetMinistryAccountByChattingId(chatid) {
+        return axios.get(API_URL + "/DropDown/GetMinistryAccountByChatting?chat_id=" + chatid);
     }
     GetUserNameCPU(parent_id) {
         return axios.get(API_URL + "/DropDown/GetUserNameCPU?parent_id=" + parent_id);

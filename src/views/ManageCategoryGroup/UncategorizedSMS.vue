@@ -33,32 +33,34 @@
     <div v-show="isExactActive">
       <v-col cols="12" md="12">
         <v-card :disabled="isDisabled">
-          <v-card-title>အမျိုးအစားအုပ်စုမခွဲခြားရသေးသည့် တုန့်ပြန်မှုများ</v-card-title>
+          <v-card-title
+            >အမျိုးအစားအုပ်စုမခွဲခြားရသေးသည့် တုံ့ပြန်မှုများ</v-card-title
+          >
           <v-divider></v-divider>
           <v-col cols="12" md="12">
             <v-row dense>
               <v-col cols="12" md="12">
                 <v-row dense>
                   <v-col cols="12" md="2">
-                          <date-picker
-                          v-model="fromdate"
-                            valueType="YYYY-MM-DD"
-                            format="DD/MM/YYYY"
-                            :editable="true"
-                            placeholder="SMS Time(From)"
-                            clearable
-                          ></date-picker>
-                        </v-col>
-                        <v-col cols="12" md="2">
-                          <date-picker
-                          v-model="todate"
-                            valueType="YYYY-MM-DD"
-                            format="DD/MM/YYYY"
-                            :editable="true"
-                            placeholder="SMS Time(To)"
-                            clearable
-                          ></date-picker>
-                        </v-col>
+                    <date-picker
+                      v-model="fromdate"
+                      valueType="YYYY-MM-DD"
+                      format="DD/MM/YYYY"
+                      :editable="true"
+                      placeholder="SMS Time(From)"
+                      clearable
+                    ></date-picker>
+                  </v-col>
+                  <v-col cols="12" md="2">
+                    <date-picker
+                      v-model="todate"
+                      valueType="YYYY-MM-DD"
+                      format="DD/MM/YYYY"
+                      :editable="true"
+                      placeholder="SMS Time(To)"
+                      clearable
+                    ></date-picker>
+                  </v-col>
                   <v-col cols="12" md="5">
                     <v-text-field
                       v-model="search"
@@ -70,17 +72,27 @@
                     ></v-text-field>
                   </v-col>
                   <v-col cols="12" md="3">
-                    <v-btn class="mr-2" small outlined color="primary" @click="Filter"
+                    <v-btn
+                      class="mr-2"
+                      small
+                      outlined
+                      color="primary"
+                      @click="Filter"
                       >ရှာမည်</v-btn
                     >
-                    <v-btn class small outlined color="error" @click="ResetFilter"
+                    <v-btn
+                      class
+                      small
+                      outlined
+                      color="error"
+                      @click="ResetFilter"
                       >ပြန်လည်ရွေးချယ်မည်</v-btn
                     >
                   </v-col>
                 </v-row>
               </v-col>
             </v-row>
-            <v-row dense>
+            <v-row dense v-if="udata.role_id != 1">
               <v-col cols="12" md="6">
                 <v-row dense class="mb-n5 mt-3">
                   <v-col cols="12" md="8">
@@ -98,13 +110,18 @@
                     ></v-autocomplete>
                   </v-col>
                   <v-col cols="12" md="4">
-                    <v-btn :disabled="disab" @click="Save()" small outlined color="indigo"
+                    <v-btn
+                      :disabled="disab"
+                      @click="Save()"
+                      small
+                      outlined
+                      color="indigo"
                       >ပေးပို့မည်</v-btn
                     >
                   </v-col>
                 </v-row>
               </v-col>
-              </v-row>
+            </v-row>
             <!-- <v-data-table
               
 
@@ -138,16 +155,16 @@
               </template>
             </v-data-table> -->
 
-            <v-data-table             
+            <v-data-table
               v-model="selected"
               :headers="headers"
               :items="uncategorizedlist"
               :options.sync="pagination"
-              :footer-props="footerProps"  
-              :server-items-length="totalclass"           
+              :footer-props="footerProps"
+              :server-items-length="totalclass"
               :disable-sort="isDisabled"
               item-key="id"
-              show-select
+              :show-select="udata.role_id == 1 ? false : true"
             >
             </v-data-table>
             <template v-slot:item="row">
@@ -181,15 +198,15 @@ export default {
       isExactActive: true,
       loading: false,
       isDisabled: true,
-      totalclass:0,
+      totalclass: 0,
       uncategorizedlist: [],
       categorylist: [],
       uncategorizedsms: new UnCategorizedSMS(),
       color: "",
       mode: "",
       snackbar: false,
-      fromdate:"",
-      todate:"",
+      fromdate: "",
+      todate: "",
       text: "",
       timeout: "5000",
       x: "right",
@@ -205,7 +222,7 @@ export default {
         sortBy: ["id"],
       },
       footerProps: {
-        "items-per-page-options": [50,100,200,300,400,500],
+        "items-per-page-options": [50, 100, 200, 300, 400, 500],
       },
       headers: [
         // {
@@ -221,7 +238,7 @@ export default {
         { text: "ပြန်စာ", value: "sms_text", width: "200" },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
       ],
-      disab : true,
+      disab: true,
     };
   },
   computed: {
@@ -234,7 +251,7 @@ export default {
       };
     },
   },
-  watch: {   
+  watch: {
     params: {
       handler() {
         this.GetAllData();
@@ -243,20 +260,20 @@ export default {
     },
 
     selected(val) {
-      var rowcount = val.length;   
+      var rowcount = val.length;
       if (rowcount > 0) {
         this.disab = false;
       } else {
         this.disab = true;
       }
     },
-
   },
-  
+
   created() {
     this.$emit("eventname", true);
     this.GetCategory();
-    // this.GetAllData(); 
+    // this.GetAllData();
+    this.udata = JSON.parse(localStorage.getItem("user"));
   },
   methods: {
     GetAllData() {
@@ -265,11 +282,12 @@ export default {
       vm.isDisabled = true;
       let params = vm.params;
       params.pageStop = params.itemsPerPage;
-      params.pageStart = params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset    
+      params.pageStart =
+        params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
       params.search = vm.search;
       params.draw = this.draw;
-      params.fromdate=vm.fromdate;
-      params.todate=vm.todate;
+      params.fromdate = vm.fromdate;
+      params.todate = vm.todate;
       if (params.descending == true) {
         params.sortOrder = "desc";
       } else {
@@ -278,11 +296,11 @@ export default {
       params.sortBy = params.sortBy[0];
       UnCategorizedSMSService.GetAll(params).then(
         (response) => {
-          vm.uncategorizedlist = [];         
+          vm.uncategorizedlist = [];
           response.data.data.forEach(function (item) {
             vm.uncategorizedlist.push(item);
           });
-          vm.totalclass = response.data.recordsTotal;     
+          vm.totalclass = response.data.recordsTotal;
           if (response.data.success == false) {
             vm.snackbar = true;
             vm.color = "red";
@@ -309,8 +327,8 @@ export default {
     },
     ResetFilter() {
       this.search = "";
-      this.fromdate="";
-      this.todate="";
+      this.fromdate = "";
+      this.todate = "";
       (this.pagination = {
         descending: true,
         page: 1,
@@ -330,23 +348,24 @@ export default {
         color: "primary",
       }).then((res) => {
         if (res) {
-          UnCategorizedSMSService.Insert(this.category_id,this.selected).then((response) => {
-             vm.selected=[];
-            if (response.data.success) {
-              this.$emit("getData", { methodCall: "GetAllData" });
-              vm.uncategorizedlist = [];              
-              this.GetAllData();
-              vm.color = "success";
-              vm.snackbar = true;
-              vm.text = "Success Categorized SMS";
-            } else {
-              vm.snackbar = true;
-              vm.color = "red";
-              vm.text = "Not Success";              
+          UnCategorizedSMSService.Insert(this.category_id, this.selected).then(
+            (response) => {
+              vm.selected = [];
+              if (response.data.success) {
+                this.$emit("getData", { methodCall: "GetAllData" });
+                vm.uncategorizedlist = [];
+                this.GetAllData();
+                vm.color = "success";
+                vm.snackbar = true;
+                vm.text = "Success Categorized SMS";
+              } else {
+                vm.snackbar = true;
+                vm.color = "red";
+                vm.text = "Not Success";
+              }
+              vm.isDisabled = false;
             }
-            vm.isDisabled=false;
-
-          });
+          );
         } else {
           vm.isDisabled = false;
         }

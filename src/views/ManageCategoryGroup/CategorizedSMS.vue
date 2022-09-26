@@ -33,34 +33,49 @@
     <div v-show="isExactActive">
       <v-col cols="12" md="12">
         <v-card :disabled="isDisabled">
-          <v-card-title>အမျိုးအစားအုပ်စုခွဲခြားပြီးသော တုန့်ပြန်မှုများ</v-card-title>
+          <v-card-title
+            >အမျိုးအစားအုပ်စုခွဲခြားပြီးသော တုံ့ပြန်မှုများ</v-card-title
+          >
           <v-divider></v-divider>
           <v-col cols="12" md="12">
             <v-row dense>
-              <v-col cols="12" md="2"> </v-col>
-              <v-col cols="12" md="10">
+              <!-- <v-col cols="12" md="2"> </v-col> -->
+              <v-col cols="12" md="12">
                 <v-row dense>
+                  <v-col cols="12" md="3">
+                    <v-autocomplete
+                      v-if="udata.role_id == 1"
+                      v-model="uncategorizedsms.ministry_id"
+                      :items="minacclist"
+                      item-text="ministry.name"
+                      item-value="id"
+                      outlined
+                      dense
+                      placeholder="ဝန်ကြီးဌာန"
+                    >
+                    </v-autocomplete>
+                  </v-col>
                   <v-col cols="12" md="2">
-                          <date-picker
-                          v-model="fromdate"
-                            valueType="YYYY-MM-DD"
-                            format="DD/MM/YYYY"
-                            :editable="true"
-                            placeholder="SMS Time(From)"
-                            clearable
-                          ></date-picker>
-                        </v-col>
-                        <v-col cols="12" md="2">
-                          <date-picker
-                          v-model="todate"
-                            valueType="YYYY-MM-DD"
-                            format="DD/MM/YYYY"
-                            :editable="true"
-                            placeholder="SMS Time(To)"
-                            clearable
-                          ></date-picker>
-                        </v-col>
-                  <v-col cols="12" md="5">
+                    <date-picker
+                      v-model="fromdate"
+                      valueType="YYYY-MM-DD"
+                      format="DD/MM/YYYY"
+                      :editable="true"
+                      placeholder="SMS Time(From)"
+                      clearable
+                    ></date-picker>
+                  </v-col>
+                  <v-col cols="12" md="2">
+                    <date-picker
+                      v-model="todate"
+                      valueType="YYYY-MM-DD"
+                      format="DD/MM/YYYY"
+                      :editable="true"
+                      placeholder="SMS Time(To)"
+                      clearable
+                    ></date-picker>
+                  </v-col>
+                  <v-col cols="12" md="2">
                     <v-text-field
                       v-model="search"
                       placeholder="ရှာဖွေရန်"
@@ -70,8 +85,13 @@
                       autocomplete="off"
                     ></v-text-field>
                   </v-col>
-                  <v-col md="3">
-                    <v-btn class="mr-2" small outlined color="primary" @click="Filter"
+                  <v-col cols="12" md="3">
+                    <v-btn
+                      class="mr-2"
+                      small
+                      outlined
+                      color="primary"
+                      @click="Filter"
                       >ရှာမည်</v-btn
                     >
                     <v-btn small outlined color="error" @click="ResetFilter"
@@ -83,7 +103,7 @@
             </v-row>
 
             <v-data-table
-              :headers="headers"
+              :headers="udata.role_id == 1 ? headers1 : headers2"
               :items="uncategorizedlist"
               :search="search"
               :options.sync="pagination"
@@ -93,8 +113,12 @@
             >
               <template v-slot:item="row">
                 <tr>
-                  <td>
-                    <v-btn small @click="CategoryReset(row.item)" outlined color="warning"
+                  <td v-if="udata.role_id != 1">
+                    <v-btn
+                      small
+                      @click="CategoryReset(row.item)"
+                      outlined
+                      color="warning"
                       >Reset Category</v-btn
                     >
                   </td>
@@ -121,6 +145,7 @@
 <script>
 import UnCategorizedSMSService from "../../services/uncategorizedsmsservice";
 import UnCategorizedSMS from "../../models/uncategorizedsms";
+import DropDownService from "../../services/dropdownservice";
 export default {
   data() {
     return {
@@ -136,8 +161,8 @@ export default {
       mode: "",
       snackbar: false,
       text: "",
-      fromdate:"",
-      todate:"",
+      fromdate: "",
+      todate: "",
       timeout: "5000",
       x: "right",
       y: "top",
@@ -152,9 +177,27 @@ export default {
         sortBy: ["id"],
       },
       footerProps: {
-        "items-per-page-options": [50,100,200,300,400,500],
+        "items-per-page-options": [50, 100, 200, 300, 400, 500],
       },
-      headers: [
+      headers1: [
+        { text: "အမှတ်စဉ်", value: "sms_code", width: "100" },
+        { text: "ကမ်ပိန်းအမှတ်စဉ်", value: "campaign_id", width: "150" },
+        { text: "ကမ်ပိန်းအမည်", value: "campaign", width: "150" },
+        { text: "မိုဘိုင်းဖုန်းနံပါတ်", value: "phono", width: "150" },
+        { text: "ပြန်စာ", value: "sms_text", width: "280" },
+        {
+          text: "တုန့်ပြန်မှုအမျိုးအစား ",
+          value: "categoryname",
+          width: "280",
+        },
+        {
+          text: "အမျိုးအစားအုပ်စုခွဲခြားသည့်အဖွဲ့",
+          value: "name",
+          width: "280",
+        },
+        { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
+      ],
+      headers2: [
         {
           text: "Reset Category",
           align: "start",
@@ -167,10 +210,19 @@ export default {
         { text: "ကမ်ပိန်းအမည်", value: "campaign", width: "150" },
         { text: "မိုဘိုင်းဖုန်းနံပါတ်", value: "phono", width: "150" },
         { text: "ပြန်စာ", value: "sms_text", width: "280" },
-        { text: "တုန့်ပြန်မှုအမျိုးအစား ", value: "categoryname", width: "280" },
-        { text: "အမျိုးအစားအုပ်စုခွဲခြားသည့်အဖွဲ့", value: "name", width: "280" },
+        {
+          text: "တုန့်ပြန်မှုအမျိုးအစား ",
+          value: "categoryname",
+          width: "280",
+        },
+        {
+          text: "အမျိုးအစားအုပ်စုခွဲခြားသည့်အဖွဲ့",
+          value: "name",
+          width: "280",
+        },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
       ],
+      minacclist: [],
     };
   },
 
@@ -196,9 +248,17 @@ export default {
   created() {
     this.$emit("eventname", true);
     // this.GetAllData();
+    this.udata = JSON.parse(localStorage.getItem("user"));
+    this.GetMinistryAccount();
   },
 
   methods: {
+    GetMinistryAccount() {
+      DropDownService.GetMinistryAccount().then((res) => {
+        this.minacclist = res.data;
+      });
+    },
+
     CategoryReset(item) {
       var vm = this;
       vm.isDisabled = true;
@@ -225,30 +285,30 @@ export default {
         }
       });
     },
-    Filter(){
-     this.pagination= {
+    Filter() {
+      (this.pagination = {
         descending: true,
         page: 1,
         itemsPerPage: 50,
         pageStart: 1,
         pageStop: null,
         sortBy: ["id"],
-      },
-      this.GetAllData();
+      }),
+        this.GetAllData();
     },
     ResetFilter() {
       this.search = "";
-      this.fromdate="";
-      this.todate="";
-      this.pagination= {
+      this.fromdate = "";
+      this.todate = "";
+      (this.pagination = {
         descending: true,
         page: 1,
         itemsPerPage: 50,
         pageStart: 1,
         pageStop: null,
         sortBy: ["id"],
-      },
-      this.GetAllData();
+      }),
+        this.GetAllData();
     },
 
     GetAllData() {
@@ -257,18 +317,31 @@ export default {
       vm.isDisabled = true;
       let params = vm.params;
       params.pageStop = params.itemsPerPage;
-      params.pageStart = params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
+      params.pageStart =
+        params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
       params.search = vm.search;
-      params.fromdate=vm.fromdate;
-      params.todate=vm.todate;
+      params.fromdate = vm.fromdate;
+      params.todate = vm.todate;
+      params.ministry_id = vm.uncategorizedsms.ministry_id;
       params.draw = this.draw;
-      //params.descending = params.sortDesc[0];
-      if (params.descending == true) {
-        params.sortOrder = "desc";
-      } else {
-        params.sortOrder = "asc";
+      if (params.sortDesc) {
+        params.descending = params.sortDesc[0];
+        if (params.descending == true) {
+          params.sortOrder = "desc";
+        } else {
+          params.sortOrder = "asc";
+        }
       }
-      params.sortBy = params.sortBy[0];
+      if (params.sortBy) {
+        params.sortBy = params.sortBy[0];
+      }
+      //params.descending = params.sortDesc[0];
+      // if (params.descending == true) {
+      //   params.sortOrder = "desc";
+      // } else {
+      //   params.sortOrder = "asc";
+      // }
+      // params.sortBy = params.sortBy[0];
       UnCategorizedSMSService.GetAllForCategorized(params).then(
         (response) => {
           vm.uncategorizedlist = [];

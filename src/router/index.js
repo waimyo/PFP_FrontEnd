@@ -5,7 +5,8 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import AccountManagementList from "../views/AccountManagement/AccountManagementList";
 import AccountManagementEntry from "../views/AccountManagement/AccountManagementEntry";
-import InboundOutboundLetterList from "../views/InboundOutboundLetter/InboundOutboundLetterList";
+import InboundLetterList from "../views/InboundOutboundLetter/InboundLetterList";
+import OutboundLetterList from "../views/InboundOutboundLetter/OutboundLetterList";
 import InboundOutboundLetterEntry from "../views/InboundOutboundLetter/InboundOutboundLetterEntry";
 import InboundOutboundLetterDetail from "../views/InboundOutboundLetter/InboundOutboundLetterDetail";
 import CategorizationStats from "../views/KPIs/CategorizationStats";
@@ -40,491 +41,519 @@ import store from '../store'
 Vue.use(VueRouter);
 
 const routes = [{
-        path: "/",
-        name: "Login",
-        component: Login,
+    path: "/",
+    name: "Login",
+    component: Login,
 
-        beforeEnter: (to, from, next) => {
-            const loggedIn = JSON.parse(localStorage.getItem("user"));
-            if (loggedIn) {
-                if (loggedIn.role_id == 4) {
-                    next("/DataList");
-                } else {
-                    next("/home");
-                }
-            }
-            //if not login,navigate to login page
-            else {
-                next();
-            }
-        }
-    },
-
-    {
-        path: "/Unauthorized",
-        name: "Unauthorized",
-        component: Unauthorized,
-    },
-
-    {
-        path: "/login",
-        name: "Login",
-        component: Login,
-    },
-    {
-        path: "/home",
-        name: "Home",
-        component: Home,
-
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_DASHBOARD,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
+    beforeEnter: (to, from, next) => {
+        const loggedIn = JSON.parse(localStorage.getItem("user"));
+        if (loggedIn) {
+            if (loggedIn.role_id == 4) {
+                next("/DataList");
             } else {
-                next();
+                next("/home");
             }
         }
-    },
-    {
-        path: "/AccountManagementList",
-        name: "AccountManagementList",
-        component: AccountManagementList,
-        children: [{
-            path: "AccountManagementEntry",
-            name: "AccountManagementEntry",
-            component: AccountManagementEntry,
-        }, ],
-
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_ACCOUNT,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+        //if not login,navigate to login page
+        else {
+            next();
         }
-    },
-    {
-        path: "/InboundOutboundLetterList",
-        name: "InboundOutboundLetterList",
-        component: InboundOutboundLetterList,
-        children: [{
-                path: "InboundOutboundLetterEntry",
-                name: "InboundOutboundLetterEntry",
-                component: InboundOutboundLetterEntry,
-            },
-            {
-                path: "InboundOutboundLetterDetail",
-                name: "InboundOutboundLetterDetail",
-                component: InboundOutboundLetterDetail,
-            },
-        ],
+    }
+},
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_INBOX_OUTBOX,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+{
+    path: "/Unauthorized",
+    name: "Unauthorized",
+    component: Unauthorized,
+},
+
+{
+    path: "/login",
+    name: "Login",
+    component: Login,
+},
+{
+    path: "/home",
+    name: "Home",
+    component: Home,
+
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_DASHBOARD,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/CategorizationStats",
-        name: "CategorizationStats",
-        component: CategorizationStats,
+    }
+},
+{
+    path: "/AccountManagementList",
+    name: "AccountManagementList",
+    component: AccountManagementList,
+    children: [{
+        path: "AccountManagementEntry",
+        name: "AccountManagementEntry",
+        component: AccountManagementEntry,
+    },],
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_CATEGORIZATION_STATS,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_ACCOUNT,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
+    }
+},
+{
+    path: "/InboundLetterList",
+    name: "InboundLetterList",
+    component: InboundLetterList,
+    children: [{
+        path: "InboundOutboundLetterEntry",
+        name: "InboundOutboundLetterEntry",
+        component: InboundOutboundLetterEntry,
     },
     {
-        path: "/ResponseStats",
-        name: "ResponseStats",
-        component: ResponseStats,
+        path: "InboundOutboundLetterDetail",
+        name: "InboundOutboundLetterDetail",
+        component: InboundOutboundLetterDetail,
+    },
+    ],
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_RESPONSE_STATS,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_INBOX_OUTBOX,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
+    }
+},
+{
+    path: "/OutboundLetterList",
+    name: "OutboundLetterList",
+    component: OutboundLetterList,
+    children: [{
+        path: "InboundOutboundLetterEntry",
+        name: "InboundOutboundLetterEntry",
+        component: InboundOutboundLetterEntry,
     },
     {
-        path: "/GroupList",
-        name: "GroupList",
-        component: GroupList,
-        children: [{
-            path: "GroupDetail",
-            name: "GroupDetail",
-            component: GroupDetail,
-        }, ],
+        path: "InboundOutboundLetterDetail",
+        name: "InboundOutboundLetterDetail",
+        component: InboundOutboundLetterDetail,
+    },
+    ],
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_MOBILE_GROUP_LIST,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_INBOX_OUTBOX,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/GroupEntry",
-        name: "GroupEntry",
-        component: GroupEntry,
-        props: true,
-        // children: [{
-        //         path: 'GroupConfirm',
-        //         name: 'GroupConfirm',
-        //         component: GroupConfirm,
-        //     },
+    }
+},
+{
+    path: "/CategorizationStats",
+    name: "CategorizationStats",
+    component: CategorizationStats,
 
-        // ]
-
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_MOBILE_GROUP_ENTRY,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_CATEGORIZATION_STATS,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/GroupConfirm",
-        name: "GroupConfirm",
-        component: GroupConfirm,
-    },
-    {
-        path: "/CampaignEntry",
-        name: "CampaignEntry",
-        component: CampaignEntry,
-        children: [{
-            path: "CampaignConfirm",
-            name: "CampaignConfirm",
-            component: CampaignConfirm,
-        }, ],
+    }
+},
+{
+    path: "/ResponseStats",
+    name: "ResponseStats",
+    component: ResponseStats,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_CAMPAIGN_ENTRY,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_RESPONSE_STATS,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/CampaignList",
-        name: "CampaignList",
-        component: CampaignList,
-        children: [{
-            path: "CampaignDetail",
-            name: "CampaignDetail",
-            component: CampaignDetail,
-        }, ],
+    }
+},
+{
+    path: "/GroupList",
+    name: "GroupList",
+    component: GroupList,
+    children: [{
+        path: "GroupDetail",
+        name: "GroupDetail",
+        component: GroupDetail,
+    },],
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_CAMPAIGN_LIST,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_MOBILE_GROUP_LIST,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
+    }
+},
+{
+    path: "/GroupEntry",
+    name: "GroupEntry",
+    component: GroupEntry,
+    props: true,
+    // children: [{
+    //         path: 'GroupConfirm',
+    //         name: 'GroupConfirm',
+    //         component: GroupConfirm,
+    //     },
+
+    // ]
+
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_MOBILE_GROUP_ENTRY,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
+        }
+    }
+},
+{
+    path: "/GroupConfirm",
+    name: "GroupConfirm",
+    component: GroupConfirm,
+},
+{
+    path: "/CampaignEntry",
+    name: "CampaignEntry",
+    component: CampaignEntry,
+    children: [{
+        path: "CampaignConfirm",
+        name: "CampaignConfirm",
+        component: CampaignConfirm,
+    },],
+
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_CAMPAIGN_ENTRY,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
+        }
+    }
+},
+{
+    path: "/CampaignList",
+    name: "CampaignList",
+    component: CampaignList,
+    children: [{
         path: "CampaignDetail",
         name: "CampaignDetail",
         component: CampaignDetail,
-    },
-    {
-        path: "/UncategorizedSMS",
-        name: "UncategorizedSMS",
-        component: UncategorizedSMS,
+    },],
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_UNCATEGORIZED_SMS,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_CAMPAIGN_LIST,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/CategorizedSMS",
-        name: "CategorizedSMS",
-        component: CategorizedSMS,
+    }
+},
+{
+    path: "CampaignDetail",
+    name: "CampaignDetail",
+    component: CampaignDetail,
+},
+{
+    path: "/UncategorizedSMS",
+    name: "UncategorizedSMS",
+    component: UncategorizedSMS,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_CATEGORIZED_SMS,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_UNCATEGORIZED_SMS,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/ManageCategory",
-        name: "ManageCategory",
-        component: ManageCategory,
+    }
+},
+{
+    path: "/CategorizedSMS",
+    name: "CategorizedSMS",
+    component: CategorizedSMS,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_MANAGE_CATEGORY,
-                Constant.PermissionForView
-            );
-            var h1 = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_CATEGORY,
-                Constant.PermissionForView
-            );
-            if (h == false && h1 == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_CATEGORIZED_SMS,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/DataList",
-        name: "DataList",
-        component: DataList,
+    }
+},
+{
+    path: "/ManageCategory",
+    name: "ManageCategory",
+    component: ManageCategory,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_DATA,
-                Constant.PermissionForView
-            );
-            var h1 = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_DATA_PORTAL,
-                Constant.PermissionForView
-            );
-            if (h == false && h1 == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_MANAGE_CATEGORY,
+            Constant.PermissionForView
+        );
+        var h1 = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_CATEGORY,
+            Constant.PermissionForView
+        );
+        if (h == false && h1 == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/DataEntry",
-        name: "DataEntry",
-        component: DataEntry,
+    }
+},
+{
+    path: "/DataList",
+    name: "DataList",
+    component: DataList,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_DATA_ENTRY,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_DATA,
+            Constant.PermissionForView
+        );
+        var h1 = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_DATA_PORTAL,
+            Constant.PermissionForView
+        );
+        if (h == false && h1 == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/UploadBulkExcel",
-        name: "UploadBulkExcel",
-        component: UploadBulkExcel,
+    }
+},
+{
+    path: "/DataEntry",
+    name: "DataEntry",
+    component: DataEntry,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_DATA_UPLOAD,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_DATA_ENTRY,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/ManageValue",
-        name: "ManageValue",
-        component: ManageValue,
+    }
+},
+{
+    path: "/UploadBulkExcel",
+    name: "UploadBulkExcel",
+    component: UploadBulkExcel,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_SERVICE_VIEW,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_DATA_UPLOAD,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/MinistryList",
-        name: "MinistryList",
-        component: MinistryList,
+    }
+},
+{
+    path: "/ManageValue",
+    name: "ManageValue",
+    component: ManageValue,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_MINISTRY,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_SERVICE_VIEW,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/DepartmentList",
-        name: "DepartmentList",
-        component: DepartmentList,
+    }
+},
+{
+    path: "/MinistryList",
+    name: "MinistryList",
+    component: MinistryList,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_DEPARTMENT,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_MINISTRY,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
+    }
+},
+{
+    path: "/DepartmentList",
+    name: "DepartmentList",
+    component: DepartmentList,
 
-    {
-        path: "/ServiceList",
-        name: "ServiceList",
-        component: ServiceList,
-
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_SERVICES,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_DEPARTMENT,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/LocationList",
-        name: "LocationList",
-        component: LocationList,
+    }
+},
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_LOCATION,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
-        }
-    },
-    {
-        path: "/AnnouncementList",
-        name: "AnnouncementList",
-        component: AnnouncementList,
+{
+    path: "/ServiceList",
+    name: "ServiceList",
+    component: ServiceList,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_ANNOUNCEMENT,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_SERVICES,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/FAQList",
-        name: "FAQList",
-        component: FAQList,
+    }
+},
+{
+    path: "/LocationList",
+    name: "LocationList",
+    component: LocationList,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_FAQ,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_LOCATION,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/AccessLog",
-        name: "AccessLog",
-        component: AccessLog,
+    }
+},
+{
+    path: "/AnnouncementList",
+    name: "AnnouncementList",
+    component: AnnouncementList,
 
-        beforeEnter: (to, from, next) => {
-            var h = store.getters.getPermissionByMenuForView(
-                Constant.PCodeFor_ACCESS_LOGS,
-                Constant.PermissionForView
-            );
-            if (h == false) {
-                next("/Unauthorized");
-            } else {
-                next();
-            }
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_ANNOUNCEMENT,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
         }
-    },
-    {
-        path: "/ChangePassword",
-        name: "ChangePassword",
-        component: ChangePassword,
-    },
+    }
+},
+{
+    path: "/FAQList",
+    name: "FAQList",
+    component: FAQList,
+
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_FAQ,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
+        }
+    }
+},
+{
+    path: "/AccessLog",
+    name: "AccessLog",
+    component: AccessLog,
+
+    beforeEnter: (to, from, next) => {
+        var h = store.getters.getPermissionByMenuForView(
+            Constant.PCodeFor_ACCESS_LOGS,
+            Constant.PermissionForView
+        );
+        if (h == false) {
+            next("/Unauthorized");
+        } else {
+            next();
+        }
+    }
+},
+{
+    path: "/ChangePassword",
+    name: "ChangePassword",
+    component: ChangePassword,
+},
 ];
 
 const router = new VueRouter({

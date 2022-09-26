@@ -35,13 +35,16 @@
         </h4>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-          <div class="mr-7" v-if="udata.role_id == 3 || udata.role_id == 4">
-            <v-badge color="warning" :content="msgcount" :value="msgcount">
-              <router-link :to="{ path: '/InboundOutboundLetterList' }">
-              <v-icon>mdi-email</v-icon>
-            </router-link>
-            </v-badge>
-          </div>
+      <div
+        class="mr-7"
+        v-if="udata.role_id == 2 || udata.role_id == 3 || udata.role_id == 4"
+      >
+        <v-badge color="warning" :content="msgcount" :value="msgcount">
+          <!-- <router-link :to="{ path: '/InboundOutboundLetterList' }"> -->
+          <v-icon>mdi-email</v-icon>
+          <!-- </router-link> -->
+        </v-badge>
+      </div>
       <v-menu
         v-model="menu"
         :close-on-content-click="false"
@@ -135,11 +138,16 @@
               <a href="#" id="mylink"></a> -->
             </v-list-item>
             <v-list-item>
-              <a style="font-size: 13px" @click="ServiceExportExcel" small outlined>
+              <a
+                style="font-size: 13px"
+                @click="ServiceExportExcel"
+                small
+                outlined
+              >
                 <v-icon color="indigo">mdi-download</v-icon>Service Download
                 ရယူရန်</a
               >
-              <a href="#" id="mylink"></a>              
+              <a href="#" id="mylink"></a>
             </v-list-item>
           </v-list>
         </v-card>
@@ -352,23 +360,26 @@ export default {
       menu: false,
       menu1: false,
       excelloading: false,
-      msgcount:0,
+      msgcount: 0,
     };
   },
 
+  updated() {
+    this.GetCountUnreadMessage();
+  },
   created() {
-    var vm=this;
+    var vm = this;
     vm.getMenu();
-    vm.GetCountUnreadMessage();
+    //vm.GetCountUnreadMessage();
     vm.udata = JSON.parse(localStorage.getItem("user"));
-    var connection = "";    
+    var connection = "";
     connection = new signalR.HubConnectionBuilder()
       .withUrl("https://localhost:44315/chatHub")
       .build();
     connection.start();
     connection.on("ReceiveNoti", function (bcount) {
       console.log("private bcount " + bcount);
-      vm.GetCountUnreadMessage();
+      //vm.GetCountUnreadMessage();
     });
   },
 
@@ -423,11 +434,11 @@ export default {
       });
     },
 
-    GetCountUnreadMessage(){
-      let vm=this;
-      InboundOutboundService.GetCountUnread().then((result)=>{
-        vm.msgcount=result.data;
-      })
+    GetCountUnreadMessage() {
+      let vm = this;
+      InboundOutboundService.GetCountUnread().then((result) => {
+        vm.msgcount = result.data;
+      });
     },
 
     ExportExcel() {
@@ -453,12 +464,12 @@ export default {
         vm.excelloading = false;
       });
     },
-    ChatList(){
+    ChatList() {
       alert("charlist");
       this.$router.push({
-                                name: "CampaignConfirm",
-                            });
-    }
+        name: "CampaignConfirm",
+      });
+    },
   },
 
   computed: {
