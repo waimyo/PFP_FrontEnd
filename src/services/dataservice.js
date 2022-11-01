@@ -35,6 +35,7 @@ class DataService{
                 fromdate:data.fromdate,
                 todate:data.todate,
                 name:data.name,
+                service:data.service,
             },
             responseType: "blob",
         }
