@@ -363,7 +363,7 @@
                         <th class="text-center">Month</th>
                         <th class="text-center" colspan="2">MPT</th>
                         <th class="text-center" colspan="2">Ooredoo</th>
-                        <th class="text-center" colspan="2">Telenor</th>
+                        <th class="text-center" colspan="2">Atom</th>
                         <th class="text-center" colspan="2">Mytel</th>
                       </tr>
                     </thead>

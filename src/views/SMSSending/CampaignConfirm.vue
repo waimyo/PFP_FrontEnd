@@ -157,7 +157,7 @@ export default {
                 return "mytel1111";
             }
             if (telenorRegExp.test(phonenumber)) {
-                return "telenor1111";
+                return "atom1111";
             }
             if (ooredooRegExp.test(phonenumber)) {
                 return "ooredoo1111";

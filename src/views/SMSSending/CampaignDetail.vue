@@ -215,7 +215,7 @@
                 
                     <template v-slot:item="row">
                         <tr>
-                            <td>{{ row.item.status }}</td>
+                            <td v-if="issuperadmin==false">{{ row.item.status }}</td>
                             <td>{{ row.item.name }}</td>
                             <td>{{ row.item.mobile }}</td>
                             <td>{{ row.item.departmentname }}</td>
@@ -335,12 +335,60 @@ export default {
             search: "",
             udata: [],
             disab : true,
-            headers: [
+            headers:[],
+            headersuperadmin: [
             {
                     text: "Status",
                     value: "status",
                     width: "150"
                 },
+                {
+                    text: "အမည်",
+                    value: "name",
+                    width: "100"
+                },
+                {
+                    text: "မိုဘိုင်းဖုန်းနံပါတ်",
+                    value: "mobile",
+                    width: "150"
+                },
+                {
+                    text: "ဌာန/အဖွဲ့အစည်း",
+                    value: "departmentname",
+                    width: "150"
+                },
+                {
+                    text: "ကျား/မ",
+                    value: "gender",
+                    width: "100"
+                },  
+                {
+                    text: "ပေးပို့ခဲ့သည့် မက်ဆေ့ချ်",
+                    value: "smsmessage",
+                    width: "500"
+                },              
+                {
+                    text: "ပြန်စာ",
+                    value: "responsemessage",
+                    width: "100"
+                },
+                {
+                    text: "တုန့်ပြန်မှုအမျိုးအစား",
+                    value: "categorizedresponse",
+                    width: "200"
+                },                
+                {
+                    text: "ပြန်စာပေးပို့သည့်အချိန်",
+                    value: "responsemessagetime",
+                    width: "150"
+                },                
+                {
+                    text: "မြို့နယ်",
+                    value: "township",
+                    width: "150"
+                },
+            ],
+            headerother: [
                 {
                     text: "အမည်",
                     value: "name",
@@ -473,10 +521,11 @@ export default {
         this.pagination.campid = this.$route.query.campaignid;
         if (this.$store.state.auth.user.role_id == 1) {
             this.issuperadmin = true;
+            this.headers=this.headersuperadmin;
         } else {
             this.issuperadmin = false;
+            this.headers=this.headerother;
         }
-
     },
     methods: {
         GetDetail() {
