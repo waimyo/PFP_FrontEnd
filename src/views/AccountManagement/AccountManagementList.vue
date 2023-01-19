@@ -31,7 +31,7 @@
                                             </v-col>
                                         </v-row>
                                         <v-row dense>
-                                            <v-col v-if="ishide" cols="12" md="4">
+                                            <v-col  cols="12" md="4" v-if="ishide">
                                                 <v-autocomplete v-model="account.role_id" :items="rolelist" item-text="name" item-value="id" clearable outlined dense placeholder="Account Type ရွေးချယ်ပါ"></v-autocomplete>
                                             </v-col>
                                             <v-col cols="12" md="4">
@@ -63,7 +63,7 @@
                                 <v-icon left>mdi-plus-circle</v-icon>CPU Acc
                                 <CPUAccountEntry v-on:getData="GetAllData" ref="CPUAccountEntryModal" />
                             </v-btn>
-                            <v-btn :disabled="deodisable" @click="NewDeoAccount()" class="mt-1 mr-2" small outlined color="indigo">
+                            <v-btn v-if="!deodisable" @click="NewDeoAccount()" class="mt-1 mr-2" small outlined color="indigo">
                                 <v-icon left>mdi-plus-circle</v-icon>DEO Acc
                                 <DEOAccountEntry v-on:getData="GetAllData" ref="DEOAccountEntryModal" />
                             </v-btn>
@@ -81,7 +81,7 @@
                                 </v-col>
                                 <v-col cols="12" md="4">
                                     <v-card style="background: #03a9f4 !important">
-                                        <v-col v-if="ishide" cols="12" md="12" class="white--text">
+                                        <v-col  cols="12" md="12" class="white--text" v-if="ishide">
                                             <h5>
                                                 CPU Account <span style="float: right">{{ ccount }}</span>
                                             </h5>
@@ -287,11 +287,11 @@ export default {
         this.$emit("eventname", true);
         let user = JSON.parse(localStorage.getItem("user"));
         // For CPU role
-        if (user.role_id == 3) {
+        if (user.role_id == 3 || user.role_id == 2) {
             this.deodisable = true;
         }
 
-        if (user.role_id == 3) {
+        if (user.role_id == 3 || user.role_id == 2) {
             this.ishide = false;
         }
         if (user.role_id == 1) {
