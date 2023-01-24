@@ -45,20 +45,20 @@ const routes = [{
     name: "Login",
     component: Login,
 
-    beforeEnter: (to, from, next) => {
-        const loggedIn = JSON.parse(localStorage.getItem("user"));
-        if (loggedIn) {
-            if (loggedIn.role_id == 4) {
-                next("/DataList");
-            } else {
-                next("/home");
-            }
-        }
-        //if not login,navigate to login page
-        else {
-            next();
-        }
-    }
+    // beforeEnter: (to, from, next) => {
+    //     const loggedIn = JSON.parse(localStorage.getItem("user"));
+    //     if (loggedIn) {
+    //         if (loggedIn.role_id == 4) {
+    //             next("/DataList");
+    //         } else {
+    //             next("/home");
+    //         }
+    //     }
+    //     //if not login,navigate to login page
+    //     else {
+    //         next();
+    //     }
+    // }
 },
 
 {
