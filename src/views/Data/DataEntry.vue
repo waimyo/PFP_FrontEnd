@@ -404,17 +404,23 @@ export default {
         vm.data.mobile == null ||
         vm.data.mobile == "" ||
         vm.data.service_id == 0 ||
+        vm.data.service_id == undefined ||
+        vm.data.service_id == "" ||
         vm.data.department_id == 0 ||
+        vm.data.department_id == undefined ||
+        vm.data.department_id == "" ||
         vm.data.ministry_id == 0 ||
         vm.data.date_of_completion == "" ||
         vm.data.location_state == 0 ||
+        vm.data.location_state == undefined ||
+        vm.data.location_state == "" ||
         vm.data.location_township == 0 ||
         vm.data.location_township == undefined ||
         vm.data.location_township == ""
       ) {
         vm.validate();
         vm.savevalidate = false;
-        //alert("First If " + vm.savevalidate);
+        //alert("First If " + vm.service_id);
       }
       if (vm.data.location_district == 0 && vm.isalltownship == false) {
         vm.savevalidate = false;
