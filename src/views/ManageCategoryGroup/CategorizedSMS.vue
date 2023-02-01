@@ -42,7 +42,7 @@
               <!-- <v-col cols="12" md="2"> </v-col> -->
               <v-col cols="12" md="12">
                 <v-row dense>
-                  <v-col cols="12" >
+                  <v-col cols="12">
                     <v-autocomplete
                       v-if="udata.role_id == 1"
                       v-model="uncategorizedsms.ministry_id"
@@ -75,7 +75,7 @@
                       clearable
                     ></date-picker>
                   </v-col>
-                  <v-col cols="12" md="2">
+                  <v-col cols="12" md="3">
                     <v-text-field
                       v-model="search"
                       placeholder="ရှာဖွေရန်"
@@ -85,7 +85,7 @@
                       autocomplete="off"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="2">
+                  <v-col cols="12" md="5">
                     <v-btn
                       class="mr-2"
                       small
@@ -94,23 +94,28 @@
                       @click="Filter"
                       >ရှာမည်</v-btn
                     >
-                    <v-btn small outlined color="error" @click="ResetFilter"
+                    <v-btn
+                      class="mr-2"
+                      small
+                      outlined
+                      color="error"
+                      @click="ResetFilter"
                       >ပြန်လည်ရွေးချယ်မည်</v-btn
                     >
                     <v-btn
-                            :loading="excelloading"
-                            :disabled="excelloading"
-                            small
-                            outlined
-                            color="success"
-                            @click="ExportExcel"
-                          >
-                            <v-icon left>mdi-export</v-icon>Export Excel
-                            <span slot="loader" class="custom-loader">
-                              <v-icon light>mdi-cached</v-icon>
-                            </span>
-                          </v-btn>
-                          <a href="#" id="mylink"></a>
+                      :loading="excelloading"
+                      :disabled="excelloading"
+                      small
+                      outlined
+                      color="success"
+                      @click="ExportExcel"
+                    >
+                      <v-icon left>mdi-export</v-icon>Export Excel
+                      <span slot="loader" class="custom-loader">
+                        <v-icon light>mdi-cached</v-icon>
+                      </span>
+                    </v-btn>
+                    <a href="#" id="mylink"></a>
                   </v-col>
                 </v-row>
               </v-col>
@@ -145,7 +150,7 @@
                   <td>{{ row.item.categoryname }}</td>
                   <td>{{ row.item.name }}</td>
                   <td>{{ row.item.sms_time }}</td>
-                  <td>{{ row.item.createdby }}</td>
+                  <td>{{ row.item.createdBy }}</td>
                 </tr>
               </template>
             </v-data-table>
@@ -214,7 +219,7 @@ export default {
           width: "280",
         },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
-        { text: "ဦးစီးဌာန", value: "createdby", width: "200" },
+        { text: "ဦးစီးဌာန", value: "createdBy", width: "200" },
       ],
       headers2: [
         {
@@ -240,7 +245,7 @@ export default {
           width: "280",
         },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
-        { text: "ဦးစီးဌာန", value: "createdby", width: "200" },
+        { text: "ဦးစီးဌာန", value: "createdBy", width: "200" },
       ],
       minacclist: [],
     };
@@ -358,7 +363,7 @@ export default {
       UnCategorizedSMSService.GetAllForCategorized(params).then(
         (response) => {
           vm.uncategorizedlist = [];
-          response.data.data.forEach(function (item) {
+          response.data.data.forEach(function(item) {
             vm.uncategorizedlist.push(item);
           });
           vm.totalclass = response.data.recordsTotal;
@@ -399,10 +404,13 @@ export default {
       if (params.sortBy) {
         params.sortBy = params.sortBy[0];
       }
-      UnCategorizedSMSService.GetExcelCategorized(params).then(response => {
+      UnCategorizedSMSService.GetExcelCategorized(params).then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         $("#mylink").attr("href", url);
-        $("#mylink").attr("download", "အမျိုးအစားအုပ်စုခွဲခြားပြီးသော တုံ့ပြန်မှုများ.xls");
+        $("#mylink").attr(
+          "download",
+          "အမျိုးအစားအုပ်စုခွဲခြားပြီးသော တုံ့ပြန်မှုများ.xls"
+        );
         $("#mylink")[0].click();
         vm.excelloading = false;
       });
@@ -416,6 +424,5 @@ export default {
   mounted() {
     this.isExactActive = typeof this.$refs.rv === "undefined";
   },
-
 };
 </script>

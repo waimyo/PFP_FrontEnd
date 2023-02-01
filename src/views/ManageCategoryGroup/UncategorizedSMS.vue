@@ -61,7 +61,7 @@
                       clearable
                     ></date-picker>
                   </v-col>
-                  <v-col cols="12" md="5">
+                  <v-col cols="12" md="3">
                     <v-text-field
                       v-model="search"
                       placeholder="ရှာဖွေရန်"
@@ -71,7 +71,7 @@
                       autocomplete="off"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="3">
+                  <v-col cols="12" md="4">
                     <v-btn
                       class="mr-2"
                       small
@@ -81,7 +81,7 @@
                       >ရှာမည်</v-btn
                     >
                     <v-btn
-                      class
+                      class="mr-2"
                       small
                       outlined
                       color="error"
@@ -89,19 +89,19 @@
                       >ပြန်လည်ရွေးချယ်မည်</v-btn
                     >
                     <v-btn
-                            :loading="excelloading"
-                            :disabled="excelloading"
-                            small
-                            outlined
-                            color="success"
-                            @click="ExportExcel"
-                          >
-                            <v-icon left>mdi-export</v-icon>Export Excel
-                            <span slot="loader" class="custom-loader">
-                              <v-icon light>mdi-cached</v-icon>
-                            </span>
-                          </v-btn>
-                          <a href="#" id="mylink"></a>
+                      :loading="excelloading"
+                      :disabled="excelloading"
+                      small
+                      outlined
+                      color="success"
+                      @click="ExportExcel"
+                    >
+                      <v-icon left>mdi-export</v-icon>Export Excel
+                      <span slot="loader" class="custom-loader">
+                        <v-icon light>mdi-cached</v-icon>
+                      </span>
+                    </v-btn>
+                    <a href="#" id="mylink"></a>
                   </v-col>
                 </v-row>
               </v-col>
@@ -190,7 +190,7 @@
                 <td>{{ row.item.phono }}</td>
                 <td>{{ row.item.sms_text }}</td>
                 <td>{{ row.item.sms_time }}</td>
-                <td>{{ row.item.createdby }}</td>
+                <td>{{ row.item.createdBy }}</td>
               </tr>
             </template>
           </v-col>
@@ -254,7 +254,7 @@ export default {
         { text: "မိုဘိုင်းဖုန်းနံပါတ်", value: "phono", width: "150" },
         { text: "ပြန်စာ", value: "sms_text", width: "200" },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
-        { text: "ဦးစီးဌာန", value: "createdby", width: "200" },
+        { text: "ဦးစီးဌာန", value: "createdBy", width: "200" },
       ],
       disab: true,
     };
@@ -303,7 +303,7 @@ export default {
       UnCategorizedSMSService.GetAll(params).then(
         (response) => {
           vm.uncategorizedlist = [];
-          response.data.data.forEach(function (item) {
+          response.data.data.forEach(function(item) {
             vm.uncategorizedlist.push(item);
           });
           vm.totalclass = response.data.recordsTotal;
@@ -389,17 +389,20 @@ export default {
       vm.excelloading = true;
       let params = vm.params;
       vm.ForGetallParams(params);
-      UnCategorizedSMSService.GetExcelUnCategorized(params).then(response => {
+      UnCategorizedSMSService.GetExcelUnCategorized(params).then((response) => {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         $("#mylink").attr("href", url);
-        $("#mylink").attr("download", "အမျိုးအစားအုပ်စုမခွဲခြားရသေးသည့် တုံ့ပြန်မှုများ.xls");
+        $("#mylink").attr(
+          "download",
+          "အမျိုးအစားအုပ်စုမခွဲခြားရသေးသည့် တုံ့ပြန်မှုများ.xls"
+        );
         $("#mylink")[0].click();
         vm.excelloading = false;
       });
     },
 
-    ForGetallParams(params){
-      var vm=this;
+    ForGetallParams(params) {
+      var vm = this;
       params.pageStop = params.itemsPerPage;
       params.pageStart =
         params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
@@ -413,7 +416,7 @@ export default {
         params.sortOrder = "asc";
       }
       params.sortBy = params.sortBy[0];
-    }
+    },
   },
   updated() {
     this.isExactActive = typeof this.$refs.rv === "undefined";
