@@ -42,7 +42,7 @@
               <!-- <v-col cols="12" md="2"> </v-col> -->
               <v-col cols="12" md="12">
                 <v-row dense>
-                  <v-col cols="12" md="3">
+                  <v-col cols="12" >
                     <v-autocomplete
                       v-if="udata.role_id == 1"
                       v-model="uncategorizedsms.ministry_id"
@@ -85,7 +85,7 @@
                       autocomplete="off"
                     ></v-text-field>
                   </v-col>
-                  <v-col cols="12" md="3">
+                  <v-col cols="12" md="2">
                     <v-btn
                       class="mr-2"
                       small
@@ -97,6 +97,20 @@
                     <v-btn small outlined color="error" @click="ResetFilter"
                       >ပြန်လည်ရွေးချယ်မည်</v-btn
                     >
+                    <v-btn
+                            :loading="excelloading"
+                            :disabled="excelloading"
+                            small
+                            outlined
+                            color="success"
+                            @click="ExportExcel"
+                          >
+                            <v-icon left>mdi-export</v-icon>Export Excel
+                            <span slot="loader" class="custom-loader">
+                              <v-icon light>mdi-cached</v-icon>
+                            </span>
+                          </v-btn>
+                          <a href="#" id="mylink"></a>
                   </v-col>
                 </v-row>
               </v-col>
@@ -131,6 +145,7 @@
                   <td>{{ row.item.categoryname }}</td>
                   <td>{{ row.item.name }}</td>
                   <td>{{ row.item.sms_time }}</td>
+                  <td>{{ row.item.createdby }}</td>
                 </tr>
               </template>
             </v-data-table>
@@ -146,6 +161,8 @@
 import UnCategorizedSMSService from "../../services/uncategorizedsmsservice";
 import UnCategorizedSMS from "../../models/uncategorizedsms";
 import DropDownService from "../../services/dropdownservice";
+import $ from "jquery";
+
 export default {
   data() {
     return {
@@ -168,6 +185,7 @@ export default {
       y: "top",
       valid: true,
       dialog: false,
+      excelloading: false,
       pagination: {
         descending: true,
         page: 1,
@@ -196,6 +214,7 @@ export default {
           width: "280",
         },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
+        { text: "ဦးစီးဌာန", value: "createdby", width: "200" },
       ],
       headers2: [
         {
@@ -221,6 +240,7 @@ export default {
           width: "280",
         },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
+        { text: "ဦးစီးဌာန", value: "createdby", width: "200" },
       ],
       minacclist: [],
     };
@@ -335,13 +355,6 @@ export default {
       if (params.sortBy) {
         params.sortBy = params.sortBy[0];
       }
-      //params.descending = params.sortDesc[0];
-      // if (params.descending == true) {
-      //   params.sortOrder = "desc";
-      // } else {
-      //   params.sortOrder = "asc";
-      // }
-      // params.sortBy = params.sortBy[0];
       UnCategorizedSMSService.GetAllForCategorized(params).then(
         (response) => {
           vm.uncategorizedlist = [];
@@ -362,6 +375,38 @@ export default {
         }
       );
     },
+
+    ExportExcel() {
+      var vm = this;
+      vm.excelloading = true;
+      let params = vm.params;
+      params.pageStop = params.itemsPerPage;
+      params.pageStart =
+        params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
+      params.search = vm.search;
+      params.fromdate = vm.fromdate;
+      params.todate = vm.todate;
+      params.ministry_id = vm.uncategorizedsms.ministry_id;
+      params.draw = vm.draw;
+      if (params.sortDesc) {
+        params.descending = params.sortDesc[0];
+        if (params.descending == true) {
+          params.sortOrder = "desc";
+        } else {
+          params.sortOrder = "asc";
+        }
+      }
+      if (params.sortBy) {
+        params.sortBy = params.sortBy[0];
+      }
+      UnCategorizedSMSService.GetExcelCategorized(params).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        $("#mylink").attr("href", url);
+        $("#mylink").attr("download", "အမျိုးအစားအုပ်စုခွဲခြားပြီးသော တုံ့ပြန်မှုများ.xls");
+        $("#mylink")[0].click();
+        vm.excelloading = false;
+      });
+    },
   },
 
   updated() {
@@ -371,5 +416,6 @@ export default {
   mounted() {
     this.isExactActive = typeof this.$refs.rv === "undefined";
   },
+
 };
 </script>

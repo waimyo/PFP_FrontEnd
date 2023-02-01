@@ -64,6 +64,42 @@ class UncategorizedSMSService {
 
     }
 
+    GetExcelCategorized(para){
+        let config={
+            headers: authHeader(),
+            params: {
+                draw: 1,
+                sortBy: para.sortBy,
+                sortOrder: para.sortOrder,
+                start: 1,
+                length: -1,
+                search: para.search,
+                fromdate: para.fromdate,
+                todate: para.todate,
+                ministry_id: para.ministry_id
+            },
+            responseType: "blob",
+        }
+        return axios.get(API_URL+'/Sms/ExcelExportCategorized',config);
+    }
 
+    GetExcelUnCategorized(para){
+        let config={
+            headers: authHeader(),
+            params: {
+                draw: 1,
+                sortBy: para.sortBy,
+                sortOrder: para.sortOrder,
+                start: 1,
+                length: -1,
+                search: para.search,
+                fromdate: para.fromdate,
+                todate: para.todate,
+                ministry_id: para.ministry_id
+            },
+            responseType: "blob",
+        }
+        return axios.get(API_URL+'/Sms/ExcelExportUnCategorized',config);
+    }
 }
 export default new UncategorizedSMSService();

@@ -88,6 +88,20 @@
                       @click="ResetFilter"
                       >ပြန်လည်ရွေးချယ်မည်</v-btn
                     >
+                    <v-btn
+                            :loading="excelloading"
+                            :disabled="excelloading"
+                            small
+                            outlined
+                            color="success"
+                            @click="ExportExcel"
+                          >
+                            <v-icon left>mdi-export</v-icon>Export Excel
+                            <span slot="loader" class="custom-loader">
+                              <v-icon light>mdi-cached</v-icon>
+                            </span>
+                          </v-btn>
+                          <a href="#" id="mylink"></a>
                   </v-col>
                 </v-row>
               </v-col>
@@ -176,6 +190,7 @@
                 <td>{{ row.item.phono }}</td>
                 <td>{{ row.item.sms_text }}</td>
                 <td>{{ row.item.sms_time }}</td>
+                <td>{{ row.item.createdby }}</td>
               </tr>
             </template>
           </v-col>
@@ -190,6 +205,7 @@
 import DropDown from "../../services/dropdownservice";
 import UnCategorizedSMSService from "../../services/uncategorizedsmsservice";
 import UnCategorizedSMS from "../../models/uncategorizedsms";
+import $ from "jquery";
 export default {
   data() {
     return {
@@ -205,6 +221,7 @@ export default {
       color: "",
       mode: "",
       snackbar: false,
+      excelloading: false,
       fromdate: "",
       todate: "",
       text: "",
@@ -237,6 +254,7 @@ export default {
         { text: "မိုဘိုင်းဖုန်းနံပါတ်", value: "phono", width: "150" },
         { text: "ပြန်စာ", value: "sms_text", width: "200" },
         { text: "ပြန်စာပေးပို့သည့်အချိန်", value: "sms_time", width: "200" },
+        { text: "ဦးစီးဌာန", value: "createdby", width: "200" },
       ],
       disab: true,
     };
@@ -281,19 +299,7 @@ export default {
       vm.loading = true;
       vm.isDisabled = true;
       let params = vm.params;
-      params.pageStop = params.itemsPerPage;
-      params.pageStart =
-        params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
-      params.search = vm.search;
-      params.draw = this.draw;
-      params.fromdate = vm.fromdate;
-      params.todate = vm.todate;
-      if (params.descending == true) {
-        params.sortOrder = "desc";
-      } else {
-        params.sortOrder = "asc";
-      }
-      params.sortBy = params.sortBy[0];
+      vm.ForGetallParams(params);
       UnCategorizedSMSService.GetAll(params).then(
         (response) => {
           vm.uncategorizedlist = [];
@@ -378,6 +384,36 @@ export default {
         this.category_id = result.data[0].id;
       });
     },
+    ExportExcel() {
+      var vm = this;
+      vm.excelloading = true;
+      let params = vm.params;
+      vm.ForGetallParams(params);
+      UnCategorizedSMSService.GetExcelUnCategorized(params).then(response => {
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        $("#mylink").attr("href", url);
+        $("#mylink").attr("download", "အမျိုးအစားအုပ်စုမခွဲခြားရသေးသည့် တုံ့ပြန်မှုများ.xls");
+        $("#mylink")[0].click();
+        vm.excelloading = false;
+      });
+    },
+
+    ForGetallParams(params){
+      var vm=this;
+      params.pageStop = params.itemsPerPage;
+      params.pageStart =
+        params.page == 1 ? 0 : params.itemsPerPage * (params.page - 1); //set offset
+      params.search = vm.search;
+      params.draw = vm.draw;
+      params.fromdate = vm.fromdate;
+      params.todate = vm.todate;
+      if (params.descending == true) {
+        params.sortOrder = "desc";
+      } else {
+        params.sortOrder = "asc";
+      }
+      params.sortBy = params.sortBy[0];
+    }
   },
   updated() {
     this.isExactActive = typeof this.$refs.rv === "undefined";
